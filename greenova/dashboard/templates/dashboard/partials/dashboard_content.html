@@ -4,6 +4,18 @@
 {% load dashboard_tags %}
 {% load custom_filters %}
 
+<!-- Persistent htmx indicator for partial swaps (hidden, ARIA-compliant) -->
+<div id="htmx-indicator" class="htmx-indicator" aria-hidden="true" hidden>
+  <div class="loading-spinner" role="status">
+    <span class="visually-hidden">Loading...</span>
+  </div>
+</div>
+
+<!-- Ensure project-selector is present for all htmx-include references -->
+<div hidden aria-hidden="true" tabindex="-1">
+  {% include "projects/projects_selector.html" %}
+</div>
+
 <!-- Dashboard content that will be swapped when a project is selected -->
 <!-- This contains ONLY the charts and data tables, not structural elements -->
 
@@ -95,38 +107,6 @@ Active Mechanisms
 <div id="data-containers"
      data-hx-ext="class-tools"
      class="dashboard-charts">
-  <!-- Obligation Compliance Chart -->
-  <div class="card chart-container">
-    <div class="card-header">
-      <h3 class="card-header-title">
-Obligation Compliance
-      </h3>
-      <div class="card-header-actions">
-        <button class="btn-icon" aria-label="Refresh chart">
-          <span class="icon-refresh" aria-hidden="true"></span>
-        </button>
-        <button class="btn-icon" aria-label="Download chart data">
-          <span class="icon-download" aria-hidden="true"></span>
-        </button>
-      </div>
-    </div>
-    <div class="card-body chart-content"
-         id="obligation-compliance-chart"
-         hx-get="{% url 'mechanisms:mechanism_charts' %}"
-         hx-trigger="load"
-         {% if project_selector_exists %}
-           hx-include="#project-selector"
-         {% endif %}
-         hx-target="#obligation-compliance-chart"
-         hx-swap="innerHTML">
-      <div class="loading-indicator">
-        <p>
-        Loading chart data...
-        </p>
-      </div>
-    </div>
-  </div>
-
   <!-- Mechanisms Chart -->
   <div id="mechanism-data-container"
        class="card chart-container"

@@ -11,6 +11,9 @@ tools:
   - run_tests
   - file_search
   - read_file
+  - write_file
+  - delete_file
+  - sqlite
   - insert_edit_into_file
   - context7
   - json

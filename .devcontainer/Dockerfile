@@ -12,18 +12,8 @@ ENV PYTHONUNBUFFERED=1 \
 # Install system dependencies
 RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
   && apt-get -y install --no-install-recommends \
-  fish \
-  direnv \
-  curl \
-  git \
-  make \
-  sqlite3 \
-  shellcheck \
-  vim \
   python3-pip \
   python3-venv \
-  gh \
-  shfmt \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/*
 
@@ -48,7 +38,6 @@ USER vscode
 # Ensure fish shell is properly configured
 RUN echo 'set -gx PATH /usr/local/share/nvm/versions/node/v${NODE_VERSION}/bin $PATH' > /home/vscode/.config/fish/config.fish \
   && echo 'set -gx NODE_PATH /usr/local/share/nvm/versions/node/v${NODE_VERSION}/lib/node_modules' >> /home/vscode/.config/fish/config.fish \
-  && echo 'set -gx PYTHONPATH /workspaces/greenova:/workspaces/greenova/greenova $PYTHONPATH' >> /home/vscode/.config/fish/config.fish \
   && echo 'set -gx PYTHONSTARTUP /workspaces/greenova/pythonstartup' >> /home/vscode/.config/fish/config.fish
 
 # Set working directory
@@ -57,8 +46,8 @@ WORKDIR /workspaces/greenova
 # Switch back to root to ensure entrypoint can handle permissions properly
 USER root
 
-# Copy entrypoint script and make it executable
-COPY entrypoint.sh /usr/local/bin/entrypoint.sh
+# Copy entrypoint script using relative path from .devcontainer directory
+COPY .devcontainer/entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
 
 # Set the entrypoint

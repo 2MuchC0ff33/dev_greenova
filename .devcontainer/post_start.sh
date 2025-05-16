@@ -178,9 +178,9 @@ if [ ! -f "/home/vscode/.config/fish/config.fish" ]; then
   mkdir -p /home/vscode/.config/fish
   cat >/home/vscode/.config/fish/config.fish <<'EOL'
 # Set up environment variables
-set -gx PYTHONPATH /workspaces/greenova:/workspaces/greenova/greenova $PYTHONPATH
+set -gx PYTHONPATH "/workspaces/greenova/.venv/bin/python"
 set -gx PYTHONSTARTUP /workspaces/greenova/pythonstartup
-set -gx PATH /workspaces/greenova/.venv/bin /usr/local/share/nvm/current/bin/npm $PATH
+set -gx PATH /workspaces/greenova/.venv/bin /usr/local/share/nvm/current/bin $PATH
 set -gx VIRTUAL_ENV /workspaces/greenova/.venv
 
 # Source virtual environment if it exists
@@ -191,6 +191,20 @@ end
 # Set up Node.js environment
 if test -d /usr/local/share/nvm
     set -gx NVM_DIR /usr/local/share/nvm
+
+    # Add Node.js bin to path if available
+    if test -d /usr/local/share/nvm/versions/node
+        # Get latest Node.js version directory
+        set -l node_versions (find /usr/local/share/nvm/versions/node -maxdepth 1 -mindepth 1 -type d | sort -r)
+        if test -n "$node_versions[1]"
+            set -gx PATH $node_versions[1]/bin $PATH
+        end
+    end
+end
+
+# Automatically allow direnv for this workspace
+if type -q direnv
+    direnv allow .
 end
 
 # Welcome message

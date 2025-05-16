@@ -533,8 +533,7 @@ reducing payload size and improving performance.
     hx-post="/check-username/"
     hx-target="#username-error"
     hx-trigger="change"
-1. **Use Request.HTMX**: Check `request.htmx` to determine if a request came
-   from HTMX.
+  />
   <div id="username-error"></div>
 
   <!-- More fields -->
@@ -736,3 +735,28 @@ applications with minimal JavaScript. By leveraging Django's templating system
 alongside HTMX's declarative approach to AJAX, you can build modern user
 experiences while maintaining the simplicity and robustness of server-rendered
 HTML.
+
+## Troubleshooting: Indicator and CSRF Errors
+
+### HTMX Indicator Error
+
+- If you see `The selector "#htmx-indicator" on hx-indicator returned no matches!`, ensure:
+  - The `#htmx-indicator` element is present in the DOM and outside any htmx swap targets.
+  - See the "HTMX Indicator Requirements" section in the style guide for details.
+
+### CSRF Token Error
+
+- If you see `The selector "[name='csrfmiddlewaretoken']" on hx-include returned no matches!`, ensure:
+  - All forms (including those loaded via htmx) include `{% csrf_token %}`.
+  - If using `hx-include`, ensure the selector matches an element present in the DOM at the time of the request.
+
+#### Example (Django)
+
+```html
+<form hx-post="/some-url/" hx-target="#result">
+  {% csrf_token %}
+  <!-- form fields -->
+</form>
+```
+
+See also: `docs/style_guide.md` and `base.html` for implementation details.

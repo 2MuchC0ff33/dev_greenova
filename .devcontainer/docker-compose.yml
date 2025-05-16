@@ -1,11 +1,11 @@
 services:
   greenova:
     build:
-      context: .
-      dockerfile: Dockerfile
+      context: ..
+      dockerfile: .devcontainer/Dockerfile
+    image: greenova:latest
     volumes:
       - ..:/workspaces/greenova:delegated
-      - venv:/workspaces/greenova/.venv:delegated
       - home:/home/vscode:delegated
       - ${HOME}/.ssh:/home/vscode/.ssh:ro
       - dotfiles:/home/vscode/dotfiles:delegated
@@ -23,8 +23,6 @@ services:
     command: sleep infinity
 
 volumes:
-  venv:
-    name: greenova-venv
   home:
     name: greenova-home
   dotfiles:

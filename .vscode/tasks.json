@@ -109,7 +109,7 @@
       "label": "Python: Type check with mypy (Django)",
       "options": {
         "env": {
-          "PYTHONPATH": "/workspaces/greenova"
+          "PYTHONPATH": "/workspaces/greenova/.venv/bin/python"
         }
       },
       "presentation": {

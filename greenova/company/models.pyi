@@ -1,12 +1,32 @@
 # Stub file for company.models
+
 from datetime import datetime
-from typing import Any
+from typing import Any, TypeVar
 
 from django.contrib.auth.models import User
 from django.db import models
 from django.db.models import Manager, QuerySet
 
+T = TypeVar("T", bound="Company")
+
+class CompanyManager(models.Manager["Company"]):
+    """Custom manager for Company model."""
+
+    def create(self, **kwargs: Any) -> Company:
+        """Create and return a new Company instance.
+
+        Args:
+            **kwargs: Arbitrary keyword arguments for Company fields.
+
+        Returns:
+            Company: The created Company instance.
+        """
+        ...
+
 class Company(models.Model):
+    """Company model."""
+
+    # objects: CompanyManager  # Do not annotate to avoid mypy error; Django provides this.
     name: str
     logo: str | None
     description: str
@@ -26,17 +46,62 @@ class Company(models.Model):
     COMPANY_SIZES: list[tuple[str, str]]
     INDUSTRY_SECTORS: list[tuple[str, str]]
 
-    def __str__(self) -> str: ...
-    def get_member_count(self) -> int: ...
-    def get_active_projects_count(self) -> int: ...
-    def get_members_by_role(self, role: str) -> QuerySet: ...
-    def add_member(self, user: User, role: str = ...) -> None: ...
-    def remove_member(self, user: User) -> None: ...
-    def clean(self) -> None: ...
+    def __str__(self) -> str:
+        """Return string representation of the company."""
+        ...
+
+    def get_member_count(self) -> int:
+        """Return the number of members in the company."""
+        ...
+
+    def get_active_projects_count(self) -> int:
+        """Return the number of active projects for the company."""
+        ...
+
+    def get_members_by_role(self, role: str) -> QuerySet[User]:
+        """Return members filtered by role.
+
+        Args:
+            role: The role to filter members by.
+
+        Returns:
+            QuerySet: Members with the specified role.
+        """
+        ...
+
+    def add_member(self, user: User, role: str = "member") -> None:
+        """Add a member to the company.
+
+        Args:
+            user: The user to add.
+            role: The role to assign.
+        """
+        ...
+
+    def remove_member(self, user: User) -> None:
+        """Remove a member from the company.
+
+        Args:
+            user: The user to remove.
+        """
+        ...
+
+    def clean(self) -> None:
+        """Clean and validate the company instance."""
+        ...
+
     @staticmethod
-    def get_default_company() -> int: ...
+    def get_default_company() -> int:
+        """Return the default company ID.
+
+        Returns:
+            int: The default company ID.
+        """
+        ...
 
 class CompanyMembership(models.Model):
+    """Company membership model."""
+
     company: Company
     user: User
     role: str
@@ -47,11 +112,26 @@ class CompanyMembership(models.Model):
 
     ROLE_CHOICES: list[tuple[str, str]]
 
-    def __str__(self) -> str: ...
-    def save(self, *args: Any, **kwargs: Any) -> None: ...
-    def clean(self) -> None: ...
+    def __str__(self) -> str:
+        """Return string representation of the membership."""
+        ...
+
+    def save(self, *args: Any, **kwargs: Any) -> None:
+        """Save the membership instance.
+
+        Args:
+            *args: Variable length argument list.
+            **kwargs: Arbitrary keyword arguments.
+        """
+        ...
+
+    def clean(self) -> None:
+        """Clean and validate the membership instance."""
+        ...
 
 class CompanyDocument(models.Model):
+    """Company document model."""
+
     company: Company
     name: str
     description: str
@@ -60,9 +140,13 @@ class CompanyDocument(models.Model):
     uploaded_by: User | None
     uploaded_at: datetime
 
-    def __str__(self) -> str: ...
+    def __str__(self) -> str:
+        """Return string representation of the document."""
+        ...
 
 class Obligation(models.Model):
+    """Obligation model."""
+
     company: Company
     name: str
     description: str
@@ -71,4 +155,6 @@ class Obligation(models.Model):
     created_at: datetime
     updated_at: datetime
 
-    def __str__(self) -> str: ...
+    def __str__(self) -> str:
+        """Return string representation of the obligation."""
+        ...
