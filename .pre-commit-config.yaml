@@ -145,7 +145,7 @@ repos:
     rev: v2.4.1
     hooks:
       - id: codespell
-        exclude: 'requirements/.*\.txt|requirements/.*\.in'
+        exclude: 'requirements/.*\.txt|requirements/.*\.in|notebooks/pie_chart_gallery\.ipynb'
   - repo: https://github.com/DavidAnson/markdownlint-cli2
     rev: v0.18.1
     hooks:

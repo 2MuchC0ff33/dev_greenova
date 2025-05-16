@@ -1,6 +1,5 @@
 import logging
 from builtins import property
-from typing import List
 
 from core.types import StatusData
 from django.core.exceptions import FieldError, ObjectDoesNotExist
@@ -23,28 +22,18 @@ class EnvironmentalMechanism(models.Model):
 
     name: models.CharField = models.CharField(max_length=255)
     project: models.ForeignKey = models.ForeignKey(
-        'projects.Project',
-        on_delete=models.CASCADE,
-        related_name='mechanisms'
+        "projects.Project", on_delete=models.CASCADE, related_name="mechanisms"
     )
     description: models.TextField = models.TextField(blank=True, null=True)
-    category: models.CharField = models.CharField(
-        max_length=100,
-        blank=True,
-        null=True
-    )
+    category: models.CharField = models.CharField(max_length=100, blank=True, null=True)
     reference_number: models.CharField = models.CharField(
-        max_length=50,
-        blank=True,
-        null=True
+        max_length=50, blank=True, null=True
     )
     effective_date: models.DateField = models.DateField(null=True, blank=True)
 
     # Add status field
     status: models.CharField = models.CharField(
-        max_length=20,
-        choices=STATUS_CHOICES,
-        default=STATUS_NOT_STARTED
+        max_length=20, choices=STATUS_CHOICES, default=STATUS_NOT_STARTED
     )
 
     # Add count fields
@@ -55,9 +44,7 @@ class EnvironmentalMechanism(models.Model):
     overdue_count: models.IntegerField = models.IntegerField(default=0)
 
     primary_environmental_mechanism: models.CharField = models.CharField(
-        max_length=255,
-        blank=True,
-        null=True
+        max_length=255, blank=True, null=True
     )
 
     created_at: models.DateTimeField = models.DateTimeField(auto_now_add=True)
@@ -65,18 +52,18 @@ class EnvironmentalMechanism(models.Model):
 
     # Add matplotlib figure fields
     status_chart: MatplotlibFigureField = MatplotlibFigureField(
-        figure='mechanisms.figures.get_mechanism_chart',  # Full import path
+        figure="mechanisms.figures.get_mechanism_chart",  # Full import path
         plt_args=lambda obj: (obj.id,),  # type: ignore
         fig_width=300,
         fig_height=250,
-        output_format='png',
+        output_format="png",
         silent=True,
     )
 
     class Meta:
-        verbose_name: str = 'Environmental Mechanism'
-        verbose_name_plural: str = 'Environmental Mechanisms'
-        ordering: List[str] = ['name']
+        verbose_name: str = "Environmental Mechanism"
+        verbose_name_plural: str = "Environmental Mechanisms"
+        ordering: list[str] = ["name"]
 
     def __str__(self) -> str:
         return self.name
@@ -121,12 +108,14 @@ class EnvironmentalMechanism(models.Model):
 
     def get_status_data(self) -> StatusData:
         """Return a dictionary of status counts for charting."""
-        return StatusData({
-            'Overdue': self.overdue_count,
-            'Not Started': max(0, self.not_started_count - self.overdue_count),
-            'In Progress': self.in_progress_count,
-            'Completed': self.completed_count,
-        })
+        return StatusData(
+            {
+                "Overdue": self.overdue_count,
+                "Not Started": max(0, self.not_started_count - self.overdue_count),
+                "In Progress": self.in_progress_count,
+                "Completed": self.completed_count,
+            }
+        )
 
 
 def update_all_mechanism_counts() -> int:
@@ -134,9 +123,9 @@ def update_all_mechanism_counts() -> int:
     Update obligation counts for all mechanisms.
     Called after importing obligations to ensure counts are accurate.
     """
-    mechanisms: QuerySet = (EnvironmentalMechanism.objects
-                            .all()
-                            .select_related('project'))
+    mechanisms: QuerySet = EnvironmentalMechanism.objects.all().select_related(
+        "project"
+    )
     updated_count: int = 0
 
     for mechanism in mechanisms:
@@ -144,14 +133,13 @@ def update_all_mechanism_counts() -> int:
             mechanism.update_obligation_counts()
             updated_count += 1
         except (
-                ObjectDoesNotExist,  # Using imported exceptions
-                FieldError,
-                AttributeError,
-                ValueError
+            ObjectDoesNotExist,  # Using imported exceptions
+            FieldError,
+            AttributeError,
+            ValueError,
         ) as e:
             logger.error(
-                'Error updating counts for mechanism %s: %s',
-                mechanism.name, str(e)
+                "Error updating counts for mechanism %s: %s", mechanism.name, str(e)
             )
 
     return updated_count

@@ -107,7 +107,7 @@
     "editor.wordWrap": "on"
   },
   "[pip-requirements]": {
-    "editor.defaultFormatter": "ms-python.black-formatter",
+    "editor.defaultFormatter": "ms-python.autopep8",
     "editor.insertFinalNewline": true,
     "editor.insertSpaces": true,
     "editor.tabSize": 4,
@@ -142,7 +142,7 @@
       "source.fixAll": "explicit",
       "source.organizeImports": "explicit"
     },
-    "editor.defaultFormatter": "ms-python.black-formatter",
+    "editor.defaultFormatter": "ms-python.autopep8",
     "editor.formatOnPaste": true,
     "editor.rulers": [88, 100]
   },

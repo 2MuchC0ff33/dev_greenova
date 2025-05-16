@@ -1,6 +1,6 @@
 ---
 description: |
-  Automated prompt to resolve duplicate environment mechanical analysis charts cards in the Greenova Django project root view. Ensures only one chart card remains when a project is selected from the project selector tool, following all project coding, linting, and documentation standards.
+  Redesign the mechanism analysis card in the root ("/") view so that, after a project is selected, the mechanism charts are displayed in a modern, responsive grid layout. The grid should dynamically resize and reflow based on the user's device (large desktop, small desktop, laptop, tablet, or mobile), eliminating the current horizontal scroll and improving visual appeal and usability. Use matplotlib to generate SVG charts and plotly to add interactivity, following all project technology and style standards.
 mode: agent
 tools:
   - filesystem
@@ -21,93 +21,92 @@ tools:
 
 # Goal
 
-Remove duplicate environment mechanical analysis charts cards from the Greenova
-Django project root ("/") view so that only one chart card remains when a
-project is selected from the project selector tool.
+Redesign the mechanism analysis card in the root ("/") view so that, after a
+project is selected from the project selector tool, the mechanism charts are
+displayed in a modern, visually appealing, responsive grid layout. The grid
+must dynamically resize and reflow for all device sizes (large desktop, small
+desktop, laptop, tablet, mobile). Use matplotlib to generate SVG charts for
+each mechanism and use plotly to add interactivity, allowing users to gain
+insights and analyze obligation records related to specific chart sections when
+hovering over mechanism chart segments. Eliminate the current horizontal scroll
+and improve usability and accessibility. Ensure that selecting a mechanism
+chart still updates the view to show procedure analysis charts as before.
 
 # Context
 
-- The root view ("/") currently displays multiple environment mechanical
-  analysis charts cards when a project is selected from the project selector
-  tool.
-- This results in duplicate chart cards being rendered, which is not the
-  intended behavior.
-- The project enforces strict standards for configuration, linting, formatting,
-  and testing.
+- Currently, after selecting a project, the mechanism analysis card displays
+  pie charts in a single horizontal row, requiring horizontal scrolling to view
+  all charts.
+- Users click a mechanism chart to update the view to show procedure analysis
+  charts.
+- This layout is not visually appealing or user-friendly, especially on smaller
+  screens.
+- The project enforces strict Django, HTML, PicoCSS, and frontend interactivity
+  standards (django-hyperscript, django-htmx).
 
 # Objectives
 
-- Identify and remove the logic or template code that causes duplicate
-  environment mechanical analysis charts cards to be rendered in the root view
-  when a project is selected.
-- Ensure that only one chart card is displayed per project selection.
-- Review and update the relevant Django view, template, and
-  JavaScript/HTMX/hyperscript logic as needed.
-- Ensure all code and configuration passes pre-commit, linting, formatting, and
-  type checking.
-- Add or update documentation to clarify the correct behavior for chart card
-  rendering in the root view.
-- Add or update a minimal test to verify that only one chart card is rendered
-  per project selection.
+- Replace the horizontal row/scroll of mechanism charts with a responsive grid
+  layout.
+- Use semantic HTML and PicoCSS for structure and styling.
+- Use matplotlib to generate SVG charts for each mechanism.
+- Use plotly to add interactivity to mechanism charts, enabling data insights
+  and analysis on hover for obligation records related to chart sections.
+- Ensure the grid dynamically resizes and reflows for all device sizes.
+- Eliminate horizontal scroll for mechanism charts.
+- Maintain or improve accessibility and usability.
+- Ensure mechanism chart selection and view update logic remains functional
+  (clicking a mechanism chart updates the view to show procedure analysis
+  charts).
+- Update or add tests to verify the new layout and interactivity.
+- Update documentation to reflect the new design and behavior.
 
 # Sources
 
-- /workspaces/greenova/templates/ (root view templates)
+- /workspaces/greenova/templates/ (root view and dashboard templates)
+- /workspaces/greenova/static/ (JS, CSS, hyperscript, htmx)
 - /workspaces/greenova/views.py (or relevant view file)
-- /workspaces/greenova/static/ (JS/HTMX/hyperscript logic)
-- Project documentation on frontend and view rendering standards
-- context7 for project-specific configuration
+- context7 for project-specific frontend and layout standards
 
 # Expectations
 
-- Only one environment mechanical analysis charts card is rendered in the root
-  view when a project is selected from the project selector tool.
-- No duplicate chart cards are displayed.
-- All code and configuration passes pre-commit, linting, formatting, and type
+- Mechanism charts are displayed in a visually appealing, responsive grid.
+- No horizontal scroll is required to view all mechanism charts.
+- The grid adapts to different screen sizes and devices.
+- All code and templates pass pre-commit, linting, formatting, and type
   checking.
-- Documentation is updated to reflect the correct chart card rendering
-  behavior.
-- A minimal test verifies that only one chart card is rendered per project
-  selection.
+- Documentation and tests are updated to match the new layout and behavior.
 
 # Acceptance Criteria
 
-- Only one environment mechanical analysis charts card is rendered in the root
-  view per project selection.
-- No duplicate chart cards are displayed.
-- All code and configuration passes all pre-commit checks, linters, formatters,
-  and type checkers.
-- Documentation is updated and clear.
-- A minimal test verifies correct chart card rendering.
+- Mechanism charts are shown in a responsive grid layout in the mechanism
+  analysis card.
+- The grid dynamically resizes and reflows for all device sizes.
+- No horizontal scroll is present for mechanism charts.
+- Chart selection and view update logic works as before (clicking a mechanism
+  chart updates the view to show procedure analysis charts).
+- All code passes pre-commit, linting, formatting, and type checking.
+- Documentation and tests are updated and clear.
 
 # Instructions
 
-- Review the root view template(s), view(s), and any related
-  JavaScript/HTMX/hyperscript logic for duplicate chart card rendering.
-- Remove or refactor the code that causes duplicate chart cards to be rendered.
-- Ensure only one chart card is rendered per project selection.
-- Run all linting, formatting, type checking and security checks to ensure
-  compliance with project standards.
-- Add or update a minimal test to verify only one chart card is rendered per
-  project selection.
+- Review the current mechanism analysis card template(s), view(s), and static
+  files.
+- Refactor the mechanism chart display to use a responsive grid layout,
+  following project standards and technology priority.
+- Use matplotlib for SVG chart generation and plotly for interactive
+  enhancements (including hover insights for obligation records).
+- Ensure the grid is accessible and visually appealing on all device sizes.
+- Maintain or improve the mechanism chart selection and view update logic.
+- Update or add tests to verify the new layout and interactivity.
 - Update documentation as needed.
 - Iterate until all acceptance criteria are met.
 
 # Additional Guidelines
 
-1. **Restructured Text (RST)**: Use as the foundational layer for body,
-   content, and messages for HTML.
-2. **HTML**: Utilize for semantic structure and markup. Do not apply inline
-   styles and scripts.
-3. **Protobuf3**: Primary implementation for data serialization.
-4. **Classless-CSS**: Apply minimal styling using Classless-PicoCSS as HTML.
-5. **django-hyperscript**: Primary implementation for client-side interactions.
-6. **django-htmx**: Secondary implementation for client-side interactions only
-   to complement django-hyperscript.
-7. **SASS/PostCSS**: Use for advanced styling needs when required.
-8. **TypeScript**: Introduce only when django-hyperscript and django-htmx
-   cannot meet the requirements. Use TypeScript for complex logic. Avoid using
-   TypeScript for simple interactions that can be handled by django-hyperscript
-   or django-htmx.
-9. **AssemblyScript**: Primary implementation for critical client-side
-   interactions and web assembly (WASM) implementations.
+1. Use RST for content/messages, semantic HTML for structure, PicoCSS for
+   styling.
+2. Use django-hyperscript for interactivity; django-htmx only as needed.
+3. Avoid inline styles/scripts; use classless CSS and progressive enhancement.
+4. Only use TypeScript or advanced CSS if simpler solutions are insufficient.
+5. Ensure accessibility and responsive design best practices.

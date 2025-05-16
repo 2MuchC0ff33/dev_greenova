@@ -1,5 +1,4 @@
-remove mechanism overview card
-when hovering over the overdue obligation card, it will pop up iframe view on same page of overdue obligations utilising existing obligation record filter logic and view list
+branwhen hovering over the overdue obligation card, it will pop up iframe view on same page of overdue obligations utilising existing obligation record filter logic and view list
 design is good
 just needs cleaning up
 after selecting project, dynamically load the mechanism overview card with the selected project and

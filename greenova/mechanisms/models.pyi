@@ -27,6 +27,10 @@ class EnvironmentalMechanism(models.Model):
     # objects: EnvironmentalMechanismManager  # Provided by Django; do not annotate.
     name: str
     project: Project
+    not_started_count: int
+    in_progress_count: int
+    completed_count: int
+    overdue_count: int
 
     def __init__(self, *args: Any, **kwargs: Any) -> None:
         """Initialize an EnvironmentalMechanism instance.

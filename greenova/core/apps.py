@@ -1,4 +1,5 @@
 """Core app configuration."""
+
 from django.apps import AppConfig
 from django.contrib import admin
 
@@ -9,10 +10,7 @@ class CoreConfig(AppConfig):
     verbose_name = "Core System"
 
     def ready(self):
-        """
-        Initialize core components when Django is ready.
-        """
-
+        """Initialize core components when Django is ready."""
         # Customize admin site
         admin.site.site_header = "Environmental Obligations Management"
         admin.site.site_title = "Greenova Admin Portal"

@@ -1,18 +1,16 @@
-from typing import Optional
-
 from django.db import models
 
 class Company(models.Model):
     name: str
-    description: Optional[str]
-    website: Optional[str]
-    email: Optional[str]
-    phone: Optional[str]
-    address: Optional[str]
-    city: Optional[str]
-    state: Optional[str]
-    country: Optional[str]
-    postal_code: Optional[str]
+    description: str | None
+    website: str | None
+    email: str | None
+    phone: str | None
+    address: str | None
+    city: str | None
+    state: str | None
+    country: str | None
+    postal_code: str | None
     created_at: models.DateTimeField
     updated_at: models.DateTimeField
 

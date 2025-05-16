@@ -8,10 +8,11 @@ This module provides serialization and deserialization functions for
 converting between Django models and Protocol Buffer messages in the
 chatbot application.
 """
+
 import logging
 import os
 import time
-from typing import Any, Dict, Optional
+from typing import Any
 
 from django.contrib.auth import get_user_model
 from django.utils import timezone
@@ -21,27 +22,30 @@ from django.utils import timezone
 User = get_user_model()
 logger = logging.getLogger(__name__)
 
+
 # Create minimal stubs for the protocol buffer classes
 class DummyMessage:
     """Stub class used when protocol buffers are not available."""
 
     def SerializeToString(self) -> bytes:
-        return b''
+        return b""
 
     def ParseFromString(self, data: bytes) -> None:
         pass
+
 
 # Import generated protobuf modules with improved error handling
 try:
     # Use relative import to ensure consistent module path
     from .proto import chatbot_pb2
+
     logger.info("Successfully imported chatbot_pb2 from proto package")
 except ImportError:
     logger.error("Failed to import chatbot_pb2. Protocol buffer definition missing.")
 
     # Check if the proto file exists
     current_dir = os.path.dirname(os.path.abspath(__file__))
-    proto_file = os.path.join(current_dir, 'proto', 'chatbot.proto')
+    proto_file = os.path.join(current_dir, "proto", "chatbot.proto")
 
     if os.path.exists(proto_file):
         logger.info(
@@ -52,7 +56,7 @@ except ImportError:
         logger.error("chatbot.proto file not found in the proto directory.")
 
     # Create a minimal stub for the module to allow Django to continue loading
-    chatbot_pb2 = type('chatbot_pb2', (), {})
+    chatbot_pb2 = type("chatbot_pb2", (), {})
 
     # Define minimal classes needed for type hinting
     class ChatMessage(DummyMessage):
@@ -77,7 +81,7 @@ except ImportError:
     chatbot_pb2.ChatResponse = ChatResponse
 
 
-def serialize_chat_message(chat_message) -> Optional[bytes]:
+def serialize_chat_message(chat_message) -> bytes | None:
     """
     Serialize a ChatMessage instance to a Protocol Buffer message.
 
@@ -92,7 +96,7 @@ def serialize_chat_message(chat_message) -> Optional[bytes]:
         proto = chatbot_pb2.ChatMessage()
 
         # Set basic fields
-        if hasattr(chat_message, 'user') and chat_message.user:
+        if hasattr(chat_message, "user") and chat_message.user:
             proto.user_id = str(chat_message.user.id)
 
         proto.content = chat_message.content
@@ -109,8 +113,9 @@ def serialize_chat_message(chat_message) -> Optional[bytes]:
         return None
 
 
-def build_chat_message_proto(user_id: Optional[str], content: str, timestamp: Optional[int],
-                             message_type: int) -> 'chatbot_pb2.ChatMessage':
+def build_chat_message_proto(
+    user_id: str | None, content: str, timestamp: int | None, message_type: int
+) -> "chatbot_pb2.ChatMessage":
     """
     Build a ChatMessage protobuf object with proper initialization.
 
@@ -138,7 +143,7 @@ def build_chat_message_proto(user_id: Optional[str], content: str, timestamp: Op
     return proto
 
 
-def deserialize_chat_message(data: bytes) -> Optional[Dict[str, Any]]:
+def deserialize_chat_message(data: bytes) -> dict[str, Any] | None:
     """
     Deserialize Protocol Buffer data to a dictionary that can be used to create
     a ChatMessage.
@@ -156,19 +161,19 @@ def deserialize_chat_message(data: bytes) -> Optional[Dict[str, Any]]:
 
         # Convert to a dictionary
         message_dict = {
-            'content': proto.content,
+            "content": proto.content,
         }
 
         # Add user if present
         if proto.user_id:
             try:
-                message_dict['user'] = User.objects.get(id=proto.user_id)
+                message_dict["user"] = User.objects.get(id=proto.user_id)
             except User.DoesNotExist:
                 logger.warning("User with ID %s not found", proto.user_id)
 
         # Add timestamp if present
         if proto.timestamp:
-            message_dict['timestamp'] = timezone.datetime.fromtimestamp(
+            message_dict["timestamp"] = timezone.datetime.fromtimestamp(
                 proto.timestamp, tz=timezone.get_current_timezone()
             )
 
@@ -181,7 +186,7 @@ def deserialize_chat_message(data: bytes) -> Optional[Dict[str, Any]]:
         return None
 
 
-def create_chat_response(message_id: str, content: str) -> Optional[bytes]:
+def create_chat_response(message_id: str, content: str) -> bytes | None:
     """
     Create a serialized ChatResponse protocol buffer message.
 
@@ -213,7 +218,7 @@ def create_chat_response(message_id: str, content: str) -> Optional[bytes]:
         return None
 
 
-def parse_chat_response(data: bytes) -> Optional[Dict[str, Any]]:
+def parse_chat_response(data: bytes) -> dict[str, Any] | None:
     """
     Parse a serialized ChatResponse protocol buffer message.
 
@@ -230,13 +235,13 @@ def parse_chat_response(data: bytes) -> Optional[Dict[str, Any]]:
 
         # Convert to a dictionary
         response_dict = {
-            'message_id': proto.message_id,
-            'content': proto.content,
+            "message_id": proto.message_id,
+            "content": proto.content,
         }
 
         # Add timestamp if present
         if proto.timestamp:
-            response_dict['timestamp'] = timezone.datetime.fromtimestamp(
+            response_dict["timestamp"] = timezone.datetime.fromtimestamp(
                 proto.timestamp, tz=timezone.get_current_timezone()
             )
 

@@ -1,10 +1,10 @@
-from typing import Any, Dict, List, Optional, Tuple, TypeVar
+from typing import Any, TypeVar
 
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.base import ContextMixin
 
 # Define a type variable for views with context data
-ContextView = TypeVar('ContextView', bound=ContextMixin)
+ContextView = TypeVar("ContextView", bound=ContextMixin)
 
 
 class BreadcrumbMixin(ContextMixin):
@@ -19,15 +19,16 @@ class BreadcrumbMixin(ContextMixin):
                 ('Current Page', None),  # None for current page with no link
             ]
     """
-    breadcrumbs: List[Tuple[str, Optional[str]]] = []
 
-    def get_breadcrumbs(self) -> List[Tuple[str, Optional[str]]]:
+    breadcrumbs: list[tuple[str, str | None]] = []
+
+    def get_breadcrumbs(self) -> list[tuple[str, str | None]]:
         """Get breadcrumbs for this view."""
         return self.breadcrumbs
 
-    def get_context_data(self, **kwargs) -> Dict[str, Any]:
+    def get_context_data(self, **kwargs) -> dict[str, Any]:
         context = super().get_context_data(**kwargs)
-        context['breadcrumbs'] = self.get_breadcrumbs()
+        context["breadcrumbs"] = self.get_breadcrumbs()
         return context
 
 
@@ -39,15 +40,16 @@ class PageTitleMixin(ContextMixin):
         class MyView(PageTitleMixin, TemplateView):
             page_title = "My Page Title"
     """
-    page_title: Optional[str] = None
 
-    def get_page_title(self) -> Optional[str]:
+    page_title: str | None = None
+
+    def get_page_title(self) -> str | None:
         """Get page title for this view."""
         return self.page_title
 
-    def get_context_data(self, **kwargs) -> Dict[str, Any]:
+    def get_context_data(self, **kwargs) -> dict[str, Any]:
         context = super().get_context_data(**kwargs)
-        context['page_title'] = self.get_page_title()
+        context["page_title"] = self.get_page_title()
         return context
 
 
@@ -59,16 +61,18 @@ class SectionMixin(ContextMixin):
         class MyView(SectionMixin, TemplateView):
             active_section = "dashboard"
     """
-    active_section: Optional[str] = None
 
-    def get_active_section(self) -> Optional[str]:
+    active_section: str | None = None
+
+    def get_active_section(self) -> str | None:
         """Get active section for this view."""
         return self.active_section
 
-    def get_context_data(self, **kwargs) -> Dict[str, Any]:
+    def get_context_data(self, **kwargs) -> dict[str, Any]:
         context = super().get_context_data(**kwargs)
-        context['active_section'] = self.get_active_section()
+        context["active_section"] = self.get_active_section()
         return context
+
 
 class ViewMixin(BreadcrumbMixin, PageTitleMixin, SectionMixin):
     """
@@ -80,6 +84,7 @@ class ViewMixin(BreadcrumbMixin, PageTitleMixin, SectionMixin):
             active_section = "dashboard"
             breadcrumbs = [('Home', 'home'), ('Dashboard', None)]
     """
+
 
 class AuthViewMixin(LoginRequiredMixin, ViewMixin):
     """

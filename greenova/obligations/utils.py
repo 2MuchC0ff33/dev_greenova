@@ -1,6 +1,6 @@
 import logging
 from datetime import date, timedelta
-from typing import TYPE_CHECKING, Any, Dict, Optional, Union
+from typing import TYPE_CHECKING, Any, Union
 
 from core.utils.roles import get_role_display
 from django.utils import timezone
@@ -27,8 +27,7 @@ logger = logging.getLogger(__name__)
 
 
 def is_obligation_overdue(
-    obligation: Union['Obligation', Dict[str, Any]],
-    reference_date: Optional[date] = None
+    obligation: Union["Obligation", dict[str, Any]], reference_date: date | None = None
 ) -> bool:
     """
     Determine if an obligation is overdue based on its status and due date.
@@ -48,8 +47,8 @@ def is_obligation_overdue(
 
     # Get status - handle both model instances and dictionaries
     if isinstance(obligation, dict):
-        status = obligation.get('status')
-        due_date = obligation.get('action_due_date')
+        status = obligation.get("status")
+        due_date = obligation.get("action_due_date")
     else:
         status = obligation.status
         due_date = obligation.action_due_date
@@ -72,8 +71,8 @@ def get_obligation_status(obligation):
 
     Returns one of: 'overdue', 'upcoming', 'completed', or the original status.
     """
-    status = getattr(obligation, 'status', '').lower()
-    due_date = getattr(obligation, 'action_due_date', None)
+    status = getattr(obligation, "status", "").lower()
+    due_date = getattr(obligation, "action_due_date", None)
     today = timezone.now().date()
 
     if status == STATUS_COMPLETED:
@@ -88,24 +87,24 @@ def get_obligation_status(obligation):
     return status
 
 
-def _match_frequency_pattern(frequency_lower: str) -> Optional[str]:
+def _match_frequency_pattern(frequency_lower: str) -> str | None:
     """Helper function to match frequency patterns and return canonical form."""
     # Daily/Weekly patterns
-    if any(term in frequency_lower for term in ['day', 'daily']):
+    if any(term in frequency_lower for term in ["day", "daily"]):
         return FREQUENCY_DAILY
-    if any(term in frequency_lower for term in ['fortnight', 'bi-week', 'biweek']):
+    if any(term in frequency_lower for term in ["fortnight", "bi-week", "biweek"]):
         return FREQUENCY_FORTNIGHTLY
-    if 'week' in frequency_lower:
+    if "week" in frequency_lower:
         return FREQUENCY_WEEKLY
 
     # Monthly patterns
     monthly_patterns = {
-        ('quarter', '3 month', 'three month'): FREQUENCY_QUARTERLY,
-        ('biannual', 'bi annual', 'semi', 'twice a year'): FREQUENCY_BIANNUAL,
-        ('annual', 'year', '12 month', 'twelve month'): FREQUENCY_ANNUAL
+        ("quarter", "3 month", "three month"): FREQUENCY_QUARTERLY,
+        ("biannual", "bi annual", "semi", "twice a year"): FREQUENCY_BIANNUAL,
+        ("annual", "year", "12 month", "twelve month"): FREQUENCY_ANNUAL,
     }
 
-    if 'month' in frequency_lower:
+    if "month" in frequency_lower:
         for terms, freq in monthly_patterns.items():
             if any(term in frequency_lower for term in terms):
                 return freq
@@ -125,15 +124,19 @@ def normalize_frequency(frequency: str) -> str:
         str: The normalized frequency string
     """
     if not frequency:
-        return ''
+        return ""
 
     frequency_lower = frequency.lower().strip()
 
     # Check if it's already in canonical form
     canonical_frequencies = {
-        FREQUENCY_DAILY, FREQUENCY_WEEKLY, FREQUENCY_FORTNIGHTLY,
-        FREQUENCY_MONTHLY, FREQUENCY_QUARTERLY, FREQUENCY_BIANNUAL,
-        FREQUENCY_ANNUAL
+        FREQUENCY_DAILY,
+        FREQUENCY_WEEKLY,
+        FREQUENCY_FORTNIGHTLY,
+        FREQUENCY_MONTHLY,
+        FREQUENCY_QUARTERLY,
+        FREQUENCY_BIANNUAL,
+        FREQUENCY_ANNUAL,
     }
     if frequency_lower in canonical_frequencies:
         return frequency_lower
@@ -153,11 +156,11 @@ def normalize_frequency(frequency: str) -> str:
 
 def get_responsibility_display_name(responsibility_value: str) -> str:
     """Get the display name for a responsibility value."""
-    if 'Perdaman' in responsibility_value or 'SCJV' in responsibility_value:
+    if "Perdaman" in responsibility_value or "SCJV" in responsibility_value:
         return responsibility_value
 
     role_display = get_role_display(responsibility_value)
     if role_display != responsibility_value:
         return role_display
 
-    return responsibility_value.replace('_', ' ').title()
+    return responsibility_value.replace("_", " ").title()

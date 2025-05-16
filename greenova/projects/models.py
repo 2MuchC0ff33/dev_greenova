@@ -11,25 +11,24 @@ from django.utils import timezone
 logger = logging.getLogger(__name__)
 
 User = get_user_model()
-UserType = TypeVar('UserType', bound=models.Model)  # Type variable for User model
+UserType = TypeVar("UserType", bound=models.Model)  # Type variable for User model
 
 
 class Project(models.Model):
     """Project model to group obligations."""
+
     name: models.CharField = models.CharField(max_length=200)
     description: models.TextField = models.TextField(blank=True)
     members: models.ManyToManyField = models.ManyToManyField(
-        User,
-        through='ProjectMembership',
-        related_name='projects'
+        User, through="ProjectMembership", related_name="projects"
     )
     created_at: models.DateTimeField = models.DateTimeField(default=timezone.now)
     updated_at: models.DateTimeField = models.DateTimeField(auto_now=True)
 
     class Meta:
-        verbose_name = 'Project'
-        verbose_name_plural = 'Projects'
-        ordering = ['-created_at']
+        verbose_name = "Project"
+        verbose_name_plural = "Projects"
+        ordering = ["-created_at"]
 
     def __str__(self) -> str:
         return self.name
@@ -51,14 +50,14 @@ class Project(models.Model):
         try:
             membership = ProjectMembership.objects.get(project=self, user=user)
             logger.debug(
-                f'Found role {membership.role} for user {user} in project {self.name}'
+                f"Found role {membership.role} for user {user} in project {self.name}"
             )
             return membership.role
         except ProjectMembership.DoesNotExist:
-            logger.debug(f'No membership found for user {user} in project {self.name}')
+            logger.debug(f"No membership found for user {user} in project {self.name}")
             return ProjectRole.VIEWER.value
         except Exception as e:
-            logger.error(f'Error getting user role: {str(e)}')
+            logger.error(f"Error getting user role: {e!s}")
             return ProjectRole.VIEWER.value
 
     def has_member(self, user: AbstractUser) -> bool:
@@ -66,97 +65,104 @@ class Project(models.Model):
         return ProjectMembership.objects.filter(project=self, user=user).exists()
 
     def add_member(
-            self,
-            user: AbstractUser,
-            role: str = ProjectRole.MEMBER.value) -> None:
+        self, user: AbstractUser, role: str = ProjectRole.MEMBER.value
+    ) -> None:
         """Add a user to the project with specified role."""
         if not self.has_member(user):
-            ProjectMembership.objects.create(
-                project=self,
-                user=user,
-                role=role
-            )
-            logger.info(f'Added user {user} to project {self.name} with role {role}')
+            ProjectMembership.objects.create(project=self, user=user, role=role)
+            logger.info(f"Added user {user} to project {self.name} with role {role}")
 
     def remove_member(self, user: AbstractUser) -> None:
         """Remove a user from the project."""
-        ProjectMembership.objects.filter(
-            project=self,
-            user=user
-        ).delete()
-        logger.info(f'Removed user {user} from project {self.name}')
+        ProjectMembership.objects.filter(project=self, user=user).delete()
+        logger.info(f"Removed user {user} from project {self.name}")
 
     def get_members_by_role(self, role: str) -> QuerySet[UserType]:
         """Get all users with specified role."""
-        return cast(QuerySet[UserType], User.objects.filter(
-            project_memberships__project=self,
-            project_memberships__role=role
-        ))
+        return cast(
+            QuerySet[UserType],
+            User.objects.filter(
+                project_memberships__project=self, project_memberships__role=role
+            ),
+        )
 
     @property
     def obligations(self):
         """Get related obligations."""
         # Move import inside method to avoid circular import
         from obligations.models import Obligation
+
         return Obligation.objects.filter(project=self)
 
 
 class ProjectMembership(models.Model):
     """Through model for project memberships."""
+
     user: models.ForeignKey = models.ForeignKey(
-        User,
-        on_delete=models.CASCADE,
-        related_name='project_memberships'
+        User, on_delete=models.CASCADE, related_name="project_memberships"
     )
     project: models.ForeignKey = models.ForeignKey(
-        Project,
-        on_delete=models.CASCADE,
-        related_name='memberships'
+        Project, on_delete=models.CASCADE, related_name="memberships"
     )
     role: models.CharField = models.CharField(
         max_length=50,  # Increased length for compatibility
         choices=get_role_choices(),
-        default=ProjectRole.MEMBER.value
+        default=ProjectRole.MEMBER.value,
     )
     created_at: models.DateTimeField = models.DateTimeField(default=timezone.now)
     updated_at: models.DateTimeField = models.DateTimeField(auto_now=True)
 
     class Meta:
-        unique_together = ['user', 'project']
-        ordering = ['project', 'user']
-        verbose_name = 'Project Membership'
-        verbose_name_plural = 'Project Memberships'
+        unique_together = ["user", "project"]
+        ordering = ["project", "user"]
+        verbose_name = "Project Membership"
+        verbose_name_plural = "Project Memberships"
 
     def __str__(self) -> str:
         """String representation with proper type checking."""
-        username = getattr(self.user, 'username', 'Unknown user') if self.user else 'Unknown user'
-        project_name = getattr(self.project, 'name', 'Unknown project') if self.project else 'Unknown project'
-        return f'{username} - {project_name} ({self.role})'
+        username = (
+            getattr(self.user, "username", "Unknown user")
+            if self.user
+            else "Unknown user"
+        )
+        project_name = (
+            getattr(self.project, "name", "Unknown project")
+            if self.project
+            else "Unknown project"
+        )
+        return f"{username} - {project_name} ({self.role})"
 
 
 class ProjectObligation(models.Model):
     """Through model for project obligations."""
+
     project: models.ForeignKey = models.ForeignKey(
-        Project,
-        on_delete=models.CASCADE,
-        related_name='project_obligations'
+        Project, on_delete=models.CASCADE, related_name="project_obligations"
     )
     obligation: models.ForeignKey = models.ForeignKey(
-        'obligations.Obligation',
+        "obligations.Obligation",
         on_delete=models.CASCADE,
-        related_name='project_obligations'
+        related_name="project_obligations",
     )
     created_at: models.DateTimeField = models.DateTimeField(default=timezone.now)
     updated_at: models.DateTimeField = models.DateTimeField(auto_now=True)
 
     class Meta:
-        unique_together = ['project', 'obligation']
-        ordering = ['project', 'obligation']
-        verbose_name = 'Project Obligation'
-        verbose_name_plural = 'Project Obligations'
+        unique_together = ["project", "obligation"]
+        ordering = ["project", "obligation"]
+        verbose_name = "Project Obligation"
+        verbose_name_plural = "Project Obligations"
 
     def __str__(self) -> str:
         """Return string representation of ProjectObligation with proper type checking."""
-        project_name = getattr(self.project, 'name', 'Unknown project') if self.project else 'Unknown project'
-        obligation_number = getattr(self.obligation, 'obligation_number', 'Unknown obligation') if self.obligation else 'Unknown obligation'
-        return f'{project_name} - {obligation_number}'
+        project_name = (
+            getattr(self.project, "name", "Unknown project")
+            if self.project
+            else "Unknown project"
+        )
+        obligation_number = (
+            getattr(self.obligation, "obligation_number", "Unknown obligation")
+            if self.obligation
+            else "Unknown obligation"
+        )
+        return f"{project_name} - {obligation_number}"

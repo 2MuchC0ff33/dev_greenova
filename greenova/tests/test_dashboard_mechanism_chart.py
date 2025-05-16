@@ -15,7 +15,7 @@ from django.urls import reverse
 from mechanisms.models import EnvironmentalMechanism
 from projects.models import Project
 
-CHART_CARD_EXPECTED_COUNT = 2  # Mechanism + Procedures
+CHART_CARD_EXPECTED_COUNT = 1  # Only Mechanism
 
 
 @pytest.mark.django_db
@@ -25,14 +25,26 @@ def test_single_mechanism_chart_card(
     project: Project,
     mechanism: EnvironmentalMechanism,
 ) -> None:
-    """Test that only one mechanism chart card is rendered per project selection."""
+    """
+    Test that only the environmental mechanisms analysis card is rendered per
+    project selection.
+
+    This test ensures that no procedures, upcoming obligations, or projects at risk
+    cards are rendered when a project is selected from the project selector tool.
+    """
     client.force_login(regular_user)
     url = reverse("dashboard:home") + f"?project_id={getattr(project, 'id', 1)}"
     response = client.get(url, HTTP_HX_REQUEST="true")
     html = response.content.decode("utf-8")
     # There should be only one mechanism chart container
     assert html.count('id="mechanism-data-container"') == 1
-    # There should not be multiple chart cards for the same project
+    # There should be only one chart card (mechanism)
     assert html.count('class="card chart-container"') == CHART_CARD_EXPECTED_COUNT
+    # Ensure no procedures chart card
+    assert 'id="procedures-data-container"' not in html
+    # Ensure no upcoming obligations card
+    assert "Upcoming Obligations" not in html
+    # Ensure no projects at risk card
+    assert "Projects at Risk of Missing Deadlines" not in html
     # Ensure no duplicate chart galleries
     assert html.count("chart-gallery") <= 1

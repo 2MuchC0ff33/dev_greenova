@@ -9,19 +9,19 @@ from obligations.models import Obligation
 
 logger = logging.getLogger(__name__)
 
+
 class Command(BaseCommand):
-    help = 'Sync environmental mechanisms from obligations and update all counts'
+    help = "Sync environmental mechanisms from obligations and update all counts"
 
     def update_null_statuses(self):
         """Update NULL statuses to 'not started'."""
         updated = Obligation.objects.filter(
-            Q(status__isnull=True) | Q(status='NULL')
-        ).update(status='not started')
+            Q(status__isnull=True) | Q(status="NULL")
+        ).update(status="not started")
 
         if updated:
             logger.info(
-                "Updated %s obligations with NULL status to 'not started'",
-                updated
+                "Updated %s obligations with NULL status to 'not started'", updated
             )
         return updated
 
@@ -32,24 +32,25 @@ class Command(BaseCommand):
 
         # Then check for any remaining invalid statuses
         invalid_status = Obligation.objects.exclude(
-            status__in=['not started', 'in progress', 'completed']
-        ).values('obligation_number', 'status')
+            status__in=["not started", "in progress", "completed"]
+        ).values("obligation_number", "status")
 
         if invalid_status.exists():
             for obj in invalid_status:
                 # Update NULL statuses to 'not started'
-                if obj['status'] in (None, 'NULL'):
+                if obj["status"] in (None, "NULL"):
                     Obligation.objects.filter(
-                        obligation_number=obj['obligation_number']
-                    ).update(status='not started')
+                        obligation_number=obj["obligation_number"]
+                    ).update(status="not started")
                     logger.info(
                         "Fixed NULL status to 'not started' for obligation %s",
-                        obj['obligation_number']
+                        obj["obligation_number"],
                     )
                 else:
                     logger.error(
                         "Invalid status '%s' for obligation %s",
-                        obj['status'], obj['obligation_number']
+                        obj["status"],
+                        obj["obligation_number"],
                     )
             # Return True since we've fixed the NULL values
             return True
@@ -57,7 +58,7 @@ class Command(BaseCommand):
 
     def update_mechanism_counts(self):
         """Update all mechanism counts including overdue status."""
-        mechanisms = EnvironmentalMechanism.objects.all().select_related('project')
+        mechanisms = EnvironmentalMechanism.objects.all().select_related("project")
         count = mechanisms.count()
 
         self.stdout.write(f"Updating counts for {count} mechanisms...")
@@ -86,25 +87,20 @@ class Command(BaseCommand):
                 # This query is a reference but does not affect mechanism updates
                 # Consider removing if not needed in future versions
                 _ = (
-                    Obligation.objects
-                    .filter(primary_environmental_mechanism__isnull=False)
-                    .values(
-                        'project',
-                        'primary_environmental_mechanism__name'
+                    Obligation.objects.filter(
+                        primary_environmental_mechanism__isnull=False
                     )
+                    .values("project", "primary_environmental_mechanism__name")
                     .annotate(
                         not_started_count=Count(
-                            'obligation_number',
-                            filter=Q(status='not started')
+                            "obligation_number", filter=Q(status="not started")
                         ),
                         in_progress_count=Count(
-                            'obligation_number',
-                            filter=Q(status='in progress')
+                            "obligation_number", filter=Q(status="in progress")
                         ),
                         completed_count=Count(
-                            'obligation_number',
-                            filter=Q(status='completed')
-                        )
+                            "obligation_number", filter=Q(status="completed")
+                        ),
                     )
                 )
 
@@ -119,7 +115,5 @@ class Command(BaseCommand):
 
         except Exception as e:
             logger.error("Error syncing mechanisms: %s", str(e))
-            self.stdout.write(
-                self.style.ERROR(f"Error syncing mechanisms: {str(e)}")
-            )
+            self.stdout.write(self.style.ERROR(f"Error syncing mechanisms: {e!s}"))
             raise

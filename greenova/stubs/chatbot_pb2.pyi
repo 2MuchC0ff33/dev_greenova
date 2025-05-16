@@ -1,8 +1,4 @@
-from typing import (
-    List,
-    Optional,
-    Sequence,
-)
+from collections.abc import Sequence
 
 class Message:
     content: str
@@ -12,14 +8,14 @@ class Message:
     def __init__(
         self, *, content: str = ..., is_bot: bool = ..., timestamp: str = ...
     ) -> None: ...
-    def CopyFrom(self, other_msg: "Message") -> None: ...
+    def CopyFrom(self, other_msg: Message) -> None: ...
 
 class Conversation:
     title: str
     user_id: str
     created_at: str
     updated_at: str
-    messages: List[Message]
+    messages: list[Message]
 
     def __init__(
         self,
@@ -28,16 +24,16 @@ class Conversation:
         user_id: str = ...,
         created_at: str = ...,
         updated_at: str = ...,
-        messages: Optional[Sequence[Message]] = ...,
+        messages: Sequence[Message] | None = ...,
     ) -> None: ...
-    def CopyFrom(self, other_msg: "Conversation") -> None: ...
+    def CopyFrom(self, other_msg: Conversation) -> None: ...
     def add_messages(self) -> Message: ...
 
 class ConversationCollection:
-    conversations: List[Conversation]
+    conversations: list[Conversation]
 
     def __init__(
-        self, *, conversations: Optional[Sequence[Conversation]] = ...
+        self, *, conversations: Sequence[Conversation] | None = ...
     ) -> None: ...
-    def CopyFrom(self, other_msg: "ConversationCollection") -> None: ...
+    def CopyFrom(self, other_msg: ConversationCollection) -> None: ...
     def add_conversations(self) -> Conversation: ...
