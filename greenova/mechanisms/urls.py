@@ -1,3 +1,5 @@
+"""URL configuration for the mechanisms app."""
+
 from django.urls import path
 
 from . import views
@@ -9,4 +11,7 @@ urlpatterns = [
         "", views.MechanismListView.as_view(), name="list"
     ),  # Fixed class name from MechanismsListView to MechanismListView
     path("charts/", views.MechanismChartView.as_view(), name="mechanism_charts"),
+    path(
+        "insights/", views.ObligationInsightView.as_view(), name="obligation_insights"
+    ),
 ]

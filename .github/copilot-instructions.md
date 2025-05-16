@@ -57,7 +57,7 @@ and manage obligations related to environmental regulations.
    logical structure. Ensure naming conventions and folder hierarchies are
    consistent, making it easier to locate and work with files.
 
-3. Create stub files (.pyi files) for internal modules that don't have proper
+3. Create stub files using `stubgen` (.pyi files) for internal modules that don't have proper
    type information.
 
 4. Add a py.typed marker file to indicate these modules have type information

@@ -8,8 +8,8 @@ import logging
 
 import pytest
 from django.template.loader import render_to_string
-from django.urls import reverse
 from django.test import Client
+from django.urls import reverse
 
 # Copyright 2025 Enveng Group.
 # SPDX-License-Identifier: AGPL-3.0-or-later
