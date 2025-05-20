@@ -64,8 +64,12 @@ repos:
       - id: ruff
         types_or: [python, pyi]
         args: ['--unsafe-fixes', '--fix']
-      - id: ruff-format
-        types_or: [python, pyi]
+
+  - repo: https://github.com/hhatto/autopep8
+    rev: v2.1.0
+    hooks:
+      - id: autopep8
+        args: [--max-line-length=88]
 
   # 5. Additional Python linting
   - repo: https://github.com/pycqa/pylint
@@ -75,7 +79,7 @@ repos:
         name: pylint (python)
         entry: pylint
         types: [python]
-        exclude: 'migrations|venv|\.venv|tests/|test_|__init__\.py'
+        exclude: 'migrations|_pb2.py|\.venv|tests/|test_|__init__\.py'
         additional_dependencies:
           - pylint_django
           - pylint_pytest
@@ -93,6 +97,7 @@ repos:
       - id: mypy
         name: mypy
         args: ['--config-file=mypy.ini', '--namespace-packages']
+        exclude: 'migrations|venv|\.venv|tests/|test_|__init__\.py|.*_pb2\.py$'
         additional_dependencies:
           - 'django-stubs'
           - 'django-stubs-ext'
@@ -111,6 +116,7 @@ repos:
           - 'types-cryptography'
           - 'types-flake8'
           - 'plotly-stubs'
+          - 'types-pytest-lazy-fixture'
           - 'types-protobuf'
           - 'types-sqlalchemy'
           - 'types-toml'

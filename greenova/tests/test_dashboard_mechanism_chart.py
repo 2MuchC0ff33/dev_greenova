@@ -1,10 +1,8 @@
-"""Test that only one mechanism chart card is rendered per project selection on the dashboard root view.
+"""
+Test that only the environmental mechanisms analysis card is rendered.
 
-This test ensures that duplicate environment mechanical analysis charts cards are not rendered
-when a project is selected from the project selector tool.
-
-Copyright 2025 Enveng Group.
-SPDX-License-Identifier: AGPL-3.0-or-later
+This test ensures that no procedures, upcoming obligations, or projects at risk
+cards are rendered when a project is selected from the project selector tool.
 """
 
 from typing import Any
@@ -26,8 +24,7 @@ def test_single_mechanism_chart_card(
     mechanism: EnvironmentalMechanism,
 ) -> None:
     """
-    Test that only the environmental mechanisms analysis card is rendered per
-    project selection.
+    Test that only the environmental mechanisms analysis card is rendered.
 
     This test ensures that no procedures, upcoming obligations, or projects at risk
     cards are rendered when a project is selected from the project selector tool.

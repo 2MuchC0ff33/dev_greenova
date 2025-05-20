@@ -2,7 +2,7 @@
 persistent=yes
 suggestion-mode=yes
 unsafe-load-any-extension=no
-ignore=migrations,venv,.venv,tests,tests/*,test_*,__init__.py
+ignore=migrations,venv,.venv,tests,tests/*,test_*,__init__.py,*_pb2.py
 
 [FORMAT]
 max-line-length=88

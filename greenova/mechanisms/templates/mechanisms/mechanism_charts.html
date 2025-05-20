@@ -1,15 +1,28 @@
 {% load static %}
 {% load mechanism_tags %}
 
+{% block extra_head %}
+  <!-- Plotly JS -->
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  <!-- Minimal chart styles for Plotly -->
+  <link rel="stylesheet"
+        href="{% static 'mechanisms/css/plotly-chart.css' %}" />
+{% endblock extra_head %}
+
 {% if mechanism_charts %}
   <section class="charts-section" aria-labelledby="charts-heading">
     <h2 id="charts-heading">
       Environmental Mechanisms Analysis
     </h2>
     <!-- Responsive Chart Grid -->
-    <div id="chartGrid" class="chart-grid" role="region" aria-label="Mechanism chart grid">
+    <div id="chartGrid"
+         class="chart-grid"
+         role="region"
+         aria-label="Mechanism chart grid">
       {% for mech in mechanism_charts %}
-        <article class="mechanism-chart" tabindex="0" aria-labelledby="chart-{{ forloop.counter }}">
+        <article class="mechanism-chart"
+                 tabindex="0"
+                 aria-labelledby="chart-{{ forloop.counter }}">
           <header>
             <h3 id="chart-{{ forloop.counter }}">
               {{ mech.name }}
@@ -18,41 +31,18 @@
           {% if mech.id %}
             <a href="{% url 'procedures:procedure_charts' mechanism_id=mech.id %}"
                aria-label="View procedure analysis for {{ mech.name }}">
-          {% endif %}
-          <figure class="svg-container">
-            {{ mech.image_data|safe }}
-          </figure>
-          {% if mech.id %}
+            {% endif %}
+            <div class="plotly-chart-container">
+            {{ mech.chart_html|safe }}
+            </div>
+            {% if mech.id %}
             </a>
           {% endif %}
         </article>
       {% endfor %}
     </div>
     <!-- End Responsive Chart Grid -->
-    <script>
-    // SVG Chart Fitting Utility
-    // Ensures SVG charts render correctly within their containers
-    document.addEventListener('DOMContentLoaded', function() {
-        setTimeout(function() {
-            const svgElements = document.querySelectorAll('.mechanism-chart figure svg');
-            svgElements.forEach(function(svg) {
-                svg.removeAttribute('width');
-                svg.removeAttribute('height');
-                // Add viewBox if not present but width/height exist
-                if (!svg.hasAttribute('viewBox') && svg.getAttribute('width') && svg.getAttribute('height')) {
-                    const width = svg.getAttribute('width');
-                    const height = svg.getAttribute('height');
-                    svg.setAttribute('viewBox', `0 0 ${width} ${height}`);
-                }
-                svg.style.width = '100%';
-                svg.style.height = 'auto';
-                svg.style.maxWidth = '100%';
-                svg.style.display = 'block';
-                svg.classList.add('responsive-svg');
-            });
-        }, 100);
-    });
-    </script>
+
     {% if table_data %}
       <!-- Detailed Data Table -->
       <article class="data-table">
@@ -69,30 +59,40 @@
           <table role="grid">
             <thead>
               <tr>
-                <th>Mechanism</th>
-                <th>Not Started</th>
-                <th>In Progress</th>
-                <th>Completed</th>
-                <th>Overdue</th>
-                <th>Total</th>
-                <th>Actions</th>
+                <th>
+Mechanism
+                </th>
+                <th>
+Not Started
+                </th>
+                <th>
+In Progress
+                </th>
+                <th>
+Completed
+                </th>
+                <th>
+Overdue
+                </th>
               </tr>
             </thead>
             <tbody>
-              {% for item in table_data %}
+              {% for row in table_data %}
                 <tr>
-                  <td>{{ item.name }}</td>
-                  <td>{{ item.not_started }}</td>
-                  <td>{{ item.in_progress }}</td>
-                  <td>{{ item.completed }}</td>
-                  <td>{{ item.overdue }}</td>
-                  <td>{{ item.total }}</td>
                   <td>
-                    {% if item.id %}
-                      <a href="{% url 'procedures:procedure_charts' mechanism_id=item.id %}"
-                         class="btn-secondary"
-                         aria-label="View details for {{ item.name }}">View</a>
-                    {% endif %}
+{{ row.name }}
+                  </td>
+                  <td>
+{{ row.not_started }}
+                  </td>
+                  <td>
+{{ row.in_progress }}
+                  </td>
+                  <td>
+{{ row.completed }}
+                  </td>
+                  <td>
+{{ row.overdue }}
                   </td>
                 </tr>
               {% endfor %}
@@ -102,16 +102,4 @@
       </article>
     {% endif %}
   </section>
-{% elif error %}
-  <div role="alert" class="notice error">
-    <p>
-      {{ error }}
-    </p>
-  </div>
-{% else %}
-  <div role="status" class="notice">
-    <p>
-      Please select a project to view mechanism charts.
-    </p>
-  </div>
 {% endif %}

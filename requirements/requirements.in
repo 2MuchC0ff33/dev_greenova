@@ -12,7 +12,6 @@ certifi
 cffi
 cfgv
 charset-normalizer
-click
 colorama
 contourpy
 cryptography
@@ -43,10 +42,8 @@ EditorConfig
 execnet
 executing
 fido2
-filelock
 fonttools
 gprof2dot
-gunicorn
 h11
 httpcore
 httpx
@@ -56,7 +53,6 @@ idna
 iniconfig
 ipython
 ipython_pygments_lexers
-jedi
 Jinja2
 joblib
 jsbeautifier
@@ -89,7 +85,6 @@ plumbum
 ply
 prompt_toolkit
 protobuf
-psutil
 ptyprocess
 pure_eval
 pycparser
@@ -107,7 +102,6 @@ requests
 rich
 ruamel.yaml
 ruamel.yaml.clib
-safety-schemas
 sentry-sdk
 setuptools
 shellingham
@@ -123,9 +117,8 @@ traitlets
 typer
 tzdata
 urllib3
-uvicorn
-uvicorn-worker
 virtualenv
 wcwidth
 wheel
 whitenoise
+filelock==3.16.1

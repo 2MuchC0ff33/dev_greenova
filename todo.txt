@@ -10,3 +10,18 @@ add chart interactivity from https://github.com/cameronsims/dev_greenova-cameron
 - ae2e5841e4d162e3016d1d0ef664803fe7747da0
 - 08b0a1f91efa3f8f7c8c30c4acac3049a493f445
 - bfedda5a8fa980607237cf00993d9dd1634623ed
+
+
+
+
+Proof of concept on the basic functionality user journey:
+- Login
+- In
+- Edit Profile
+- Edit Company
+- Click onto overdue item, edit the overdue item and save to close.
+- Drill down projects, mechanisms, procedures, and obligations view with the ability to add, edit, and delete.
+
+Inspection
+
+Auditing

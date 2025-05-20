@@ -7,7 +7,6 @@
   "updateRemoteUserUID": true,
   "containerUser": "vscode",
   "forwardPorts": [8000],
-
   "customizations": {
     "vscode": {
       "settings": {
@@ -23,6 +22,21 @@
         "python.testing.pytestPath": "/usr/local/py-utils/bin/pytest",
         "eslint.format.enable": true,
         "eslint.lintTask.enable": true,
+        "ruff.path": ["/usr/local/py-utils/bin/ruff"],
+        "black-formatter.path": ["/usr/local/py-utils/bin/black"],
+        "mypy-type-checker.path": ["/usr/local/py-utils/bin/mypy"],
+        "bandit.path": ["/usr/local/py-utils/bin/bandit"],
+        "pylint.path": ["/usr/local/py-utils/bin/pylint"],
+        "isort.path": ["/usr/local/py-utils/bin/isort"],
+        "eslint.runtime": "/usr/local/share/nvm/current/bin/node",
+        "typescript.tsserver.nodePath": "/usr/local/share/nvm/current/bin/node",
+        "shellcheck.executablePath": "/usr/local/bin/shellcheck",
+        "shellformat.path": "/usr/local/bin/shfmt",
+        "snyk.advanced.cliPath": "/usr/local/share/nvm/versions/node/v20.19.1/bin/snyk",
+        "snyk.languageServerPath": "/home/vscode/.local/share/snyk/snyk-ls",
+        "snyk.cachePath": "/home/vscode/.local/share/snyk",
+        "snyk.cliPath": "/usr/local/share/nvm/current/bin/snyk",
+        "protoc.path": "/usr/local/bin/protoc",
         "files.associations": {
           "*.css": "css",
           "*.html": "django-html",
@@ -79,12 +93,35 @@
           "**~/.vscode-server/**": true,
           "**~/.vscode/**": true
         },
-        "snyk.cliPath": "/usr/local/share/nvm/current/bin/snyk",
-        "snyk.experimental.useCli": true,
-        "snyk.languageServerPath": "/home/vscode/.local/share/snyk/snyk-ls",
-        "snyk.cachePath": "/home/vscode/.local/share/snyk",
-        "snyk.advanced.cliPath": "/usr/local/share/nvm/versions/node/v20.19.1/bin/snyk",
-        "snyk.trustedFolders": ["/workspaces/greenova/"]
+        "[python]": {
+          "editor.autoClosingQuotes": "always",
+          "editor.formatOnSave": true,
+          "editor.codeActionsOnSave": {
+            "source.fixAll": "explicit",
+            "source.organizeImports": "explicit"
+          },
+          "editor.defaultFormatter": "ms-python.autopep8",
+          "editor.formatOnPaste": true,
+          "editor.rulers": [88, 100]
+        },
+        "djlint.pythonPath": "/workspaces/greenova/.venv/bin/python",
+        "djlint.enableLinting": true,
+        "djlint.useVenv": true,
+        "dbcode.connections": [
+          {
+            "connectionId": "N-Ye-PKEqFS9-XzbC_IjN",
+            "connectionType": "socket",
+            "driver": "sqlite",
+            "driverOptions": {
+              "extensions": []
+            },
+            "name": "greenova",
+            "readOnly": false,
+            "role": "development",
+            "socket": "greenova/greenova/db.sqlite3"
+          }
+        ],
+        "snyk.trustedFolders": ["/workspaces/greenova"]
       },
       "extensions": [
         "batisteo.vscode-django",
@@ -137,16 +174,15 @@
         "Willumz.generic-pseudocode",
         "fnando.linter",
         "GitHub.vscode-pull-request-github",
-        "MS-CST-E.vscode-devskim"
+        "MS-CST-E.vscode-devskim",
+        "yzane.markdown-pdf"
       ]
     }
   },
-
   "mounts": [
     "source=${localEnv:HOME}/.ssh,target=/home/vscode/.ssh,type=bind,consistency=ro",
     "source=dotfiles,target=/home/vscode/dotfiles,type=volume"
   ],
-
   "initializeCommand": "mkdir -p \"${localWorkspaceFolder}/.devcontainer/.cache/buildx\" && (docker buildx inspect greenova >/dev/null 2>&1 && docker buildx rm greenova || true) && docker buildx create --name greenova && docker buildx use greenova && (docker buildx bake --file \"${localWorkspaceFolder}/.devcontainer/docker-bake.hcl\" --load greenova || (echo \"Docker build failed. Check configuration.\" && exit 1))",
   "postCreateCommand": "sudo chown -R vscode:vscode /home/vscode/dotfiles /home/vscode/.vscode-server || true && chmod +x /workspaces/greenova/.devcontainer/post_start.sh",
   "postStartCommand": "cd /workspaces/greenova && /bin/bash ./.devcontainer/post_start.sh",
@@ -179,15 +215,7 @@
     "ghcr.io/hspaans/devcontainer-features/django-upgrade:1": {
       "version": "latest"
     },
-    "ghcr.io/hspaans/devcontainer-features/pytest:1": {
-      "version": "latest",
-      "plugins": "pytest-testinfra pytest-cov pytest-django pytest-stub pytest-xdist pytest-clarity pytest-mock pytest-dependency pytest-bdd pytest-profiling pytest-html pytest-env pytest-dotenv pytest-randomly pytest-timeout"
-    },
     "ghcr.io/hspaans/devcontainer-features/pyupgrade:1": {
-      "version": "latest"
-    },
-    "ghcr.io/va-h/devcontainers-features/uv:1": {
-      "shellautocompletion": true,
       "version": "latest"
     },
     "ghcr.io/devcontainers-extra/features/bandit:2": {
@@ -203,7 +231,7 @@
     },
     "ghcr.io/devcontainers-extra/features/mypy:2": {
       "version": "latest",
-      "plugins": "django-stubs django-stubs-ext types-requests types-Pillow types-PyYAML django-types-extra types-python-dateutil types-protobuf matplotlib-stubs pandas-stubs types-pytz pytest-stub types-jinja2 types-setuptools types-cryptography types-flake8 plotly-stubs"
+      "plugins": "django-stubs django-stubs-ext types-requests types-Pillow types-PyYAML django-types-extra types-python-dateutil types-protobuf matplotlib-stubs pandas-stubs types-pytz pytest-stub types-pytest-lazy-fixture types-jinja2 types-setuptools types-cryptography types-flake8 plotly-stubs"
     },
     "ghcr.io/devcontainers-extra/features/isort:2": {},
     "ghcr.io/devcontainers-extra/features/pre-commit:2": {

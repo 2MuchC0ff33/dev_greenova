@@ -3,7 +3,7 @@
 from typing import Any, TypeVar
 
 from django.db import models
-from projects.models import Project
+from django.db.models.manager import Manager
 
 T = TypeVar("T", bound="EnvironmentalMechanism")
 
@@ -24,13 +24,14 @@ class EnvironmentalMechanismManager(models.Manager["EnvironmentalMechanism"]):
 class EnvironmentalMechanism(models.Model):
     """EnvironmentalMechanism model."""
 
-    # objects: EnvironmentalMechanismManager  # Provided by Django; do not annotate.
+    objects: Manager[EnvironmentalMechanism]  # Provided by Django; do not annotate.
+    id: int
     name: str
-    project: Project
     not_started_count: int
     in_progress_count: int
     completed_count: int
     overdue_count: int
+    project_id: int
 
     def __init__(self, *args: Any, **kwargs: Any) -> None:
         """Initialize an EnvironmentalMechanism instance.

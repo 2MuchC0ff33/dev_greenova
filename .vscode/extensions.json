@@ -48,6 +48,7 @@
     "ms-python.debugpy",
     "charliermarsh.ruff",
     "davidanson.vscode-markdownlint",
-    "fnando.linter"
+    "fnando.linter",
+    "yzane.markdown-pdf"
   ]
 }

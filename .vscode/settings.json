@@ -6,7 +6,8 @@
     "**/.venv",
     "**/node_modules",
     "**/.vscode-server",
-    "**/.git"
+    "**/.git",
+    "**/*_pb2.py"
   ],
   "MS-CST-E.vscode-devskim.rules.enableBestPracticeSeverityRules": true,
   "MS-CST-E.vscode-devskim.rules.enableCriticalSeverityRules": true,
@@ -87,7 +88,7 @@
     "editor.tabSize": 2
   },
   "[json]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.defaultFormatter": "vscode.json-language-features",
     "editor.formatOnSave": true,
     "editor.insertSpaces": true,
     "editor.tabSize": 2
@@ -136,15 +137,9 @@
     "editor.tabSize": 4
   },
   "[python]": {
-    "editor.autoClosingQuotes": "always",
-    "editor.formatOnSave": true,
-    "editor.codeActionsOnSave": {
-      "source.fixAll": "explicit",
-      "source.organizeImports": "explicit"
-    },
     "editor.defaultFormatter": "ms-python.autopep8",
-    "editor.formatOnPaste": true,
-    "editor.rulers": [88, 100]
+    "editor.formatOnSave": true,
+    "editor.rulers": [88]
   },
   "[shellcheckrc]": {
     "editor.defaultFormatter": "timonwong.shellcheck",
@@ -180,7 +175,7 @@
   "chat.agent.enabled": true,
   "chat.commandCenter.enabled": true,
   "chat.detectParticipant.enabled": true,
-  "chat.edits2.enabled": true,
+  "chat.edits2.enabled": false,
   "chat.extensionTools.enabled": true,
   "chat.focusWindowOnConfirmation": true,
   "chat.mcp.discovery.enabled": true,
@@ -284,7 +279,7 @@
   "editor.linkedEditing": true,
   "editor.renderWhitespace": "boundary",
   "editor.rulers": [79, 88, 100],
-  "editor.stickyScroll.enabled": true,
+  "editor.stickyScroll.enabled": false,
   "editor.suggest.showIssues": true,
   "editorconfig.generateAuto": true,
   "editorconfig.showMenuEntry": true,
@@ -324,9 +319,8 @@
     "requirements/*.txt": "pip-requirements",
     ".env*": "dotenv"
   },
-  "files.autoSave": "afterDelay",
-  "files.autoSaveDelay": 500,
-  "files.watcherInclude": ["**/*.py", "**/*.html", "**/*.css", "**/*.js"],
+  "files.autoSave": "onFocusChange",
+  "files.autoSaveDelay": 1500,
   "fish.path.fish": "fish",
   "fish.path.fish_indent": "fish_indent",
   "git.allowNoVerifyCommit": true,
@@ -369,7 +363,7 @@
   "github-actions.remote-name": "origin",
   "github.branchProtection": true,
   "github.copilot.advanced": {
-    "debug.enable": false,
+    "debug.enable": true,
     "inlineSuggestCount": 3,
     "listCount": 10
   },
@@ -453,7 +447,7 @@
   "githubPullRequests.defaultDeletionMethod.selectLocalBranch": true,
   "githubPullRequests.defaultDeletionMethod.selectRemote": true,
   "githubPullRequests.defaultMergeMethod": "rebase",
-  "githubPullRequests.experimental.chat": true,
+  "githubPullRequests.experimental.chat": false,
   "githubPullRequests.experimental.notificationsView": true,
   "githubPullRequests.experimental.useQuickChat": true,
   "githubPullRequests.notifications": "pullRequests",
@@ -512,7 +506,13 @@
     ".yml",
     ".enc",
     ".pyi",
-    ".txt"
+    ".txt",
+    ".md",
+    ".html",
+    ".typed",
+    ".ini",
+    ".cfg",
+    ".env"
   ],
   "licenser.license": "AGPLv3",
   "licenser.projectName": "Greenova",
@@ -551,7 +551,6 @@
   "terminal.integrated.environmentChangesIndicator": "on",
   "terminal.integrated.environmentChangesRelaunch": true,
   "terminal.integrated.gpuAcceleration": "off",
-  "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.occurrencesHighlight": "off",
   "editor.semanticHighlighting.enabled": false,
   "files.exclude": {
@@ -567,7 +566,8 @@
     "**/node_modules": true,
     "**~/.vscode-server/**": true,
     "**~/.vscode/**": true,
-    ".venv": true
+    ".venv": true,
+    "**/*_pb2.py": true
   },
   "files.watcherExclude": {
     "**/*.pyc": true,
@@ -654,7 +654,7 @@
     ".github/instructions": true
   },
   "github.copilot.chat.agent.autoFix": true,
-  "inlineChat.enableV2": true,
+  "inlineChat.enableV2": false,
   "inlineChat.accessibleDiffView": "auto",
   "inlineChat.hideOnRequest": true,
   "editor.inlineSuggest.enabled": true,
@@ -697,7 +697,6 @@
   },
   "github.copilot.chat.search.keywordSuggestions": true,
   "github.copilot.nextEditSuggestions.fixes": true,
-  "github.copilot.selectedCompletionModel": "gpt-4.1",
   "typescript.autoClosingTags": true,
   "typescript.check.npmIsInstalled": true,
   "typescript.experimental.expandableHover": true,
@@ -716,7 +715,6 @@
   "css.hover.documentation": true,
   "dataWrangler.experiments.autoDetectCsvDelimiter": true,
   "dataWrangler.experiments.copilot.enabled": true,
-  "dbcode.ai.modelId": "gpt-4.1",
   "dbcode.color.applyToActiveEditorTabBackground": true,
   "dbcode.color.applyToStatusBarBackground": true,
   "dbcode.history.enabled": true,
@@ -749,7 +747,7 @@
   "python.analysis.aiCodeActions": {
     "implementAbstractClasses": true
   },
-  "python.analysis.diagnosticMode": "openFilesOnly",
+  "python.analysis.diagnosticMode": "workspace",
   "python.analysis.enablePytestSupport": true,
   "python.analysis.languageServerMode": "full",
   "python.analysis.typeCheckingMode": "strict",
