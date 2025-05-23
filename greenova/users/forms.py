@@ -30,8 +30,10 @@ class UserProfileForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         if self.instance and hasattr(self.instance, "pk") and self.instance.pk:
             # Type ignore comments prevent type checker errors for user attributes
-            self.fields["first_name"].initial = self.instance.user.first_name  # type: ignore
-            self.fields["last_name"].initial = self.instance.user.last_name  # type: ignore
+            # type: ignore
+            self.fields["first_name"].initial = self.instance.user.first_name
+            # type: ignore
+            self.fields["last_name"].initial = self.instance.user.last_name
             self.fields["email"].initial = self.instance.user.email  # type: ignore
 
     def save(self, commit: bool = True) -> Profile:

@@ -51,4 +51,89 @@
 - [HTMX Documentation](https://htmx.org/)
 - [Greenova GitHub Pull Requests](https://github.com/enveng-group/dev_greenova/pulls)
 - [Greenova GitHub Issues](https://github.com/enveng-group/dev_greenova/issues)
-- [Greenova Project Board](https://github.com/users/enveng-group/projects/8)
+- [Greenova Project Board](https://github.com/users/enveng-group/projects/8) Hi
+  Raheel,
+
+Thanks again—great to have you on board!
+
+To get started, please **fork** the Greenova repo to your GitHub account and
+**clone your forked version** locally: 🔗
+<https://github.com/enveng-group/dev_greenova>
+
+---
+
+🔧 **Next Steps**
+
+After setting up your environment (see `README`), you can begin working through
+the following tasks. Please submit a **pull request** after each task and
+assign **@enveng-group** as the reviewer.
+
+---
+
+### ✅ Phase 1: Setup & Auth
+
+1. **Fork, Clone & Setup**
+
+   - Set up local dev environment and confirm tests/pre-commit hooks run.
+
+2. **Integrate `django-allauth` with MFA**
+   - Add MFA, refactor templates with PicoCSS + semantic HTML, ensure WCAG 2.1
+     AA compliance, and add runtime type checks/tests.
+
+---
+
+### 🛠️ Phase 2: Core Features
+
+3. **Projects & Mechanisms CRUD**
+
+   - Build user-facing CRUD with permissions, type annotations, and accessible
+     forms.
+
+4. **Obligations CRUD**
+
+   - Add validation, accessibility, and tests.
+
+5. **Responsibility Assignment**
+   - UI for assigning obligations to users/groups with permission logic.
+
+---
+
+### 📊 Phase 3: Dashboards & Navigation
+
+6. **Compliance Dashboard**
+
+   - Refactor layout, add filtering, drill-down, and accessibility.
+
+7. **Drill-down Navigation**
+
+   - Mechanism → Procedure → Obligation with filtering/sorting.
+
+8. **Overdue Tooltip**
+
+   - Add interactive, accessible tooltip for overdue items.
+
+9. **Procedure Charts → Grid View**
+   - Refactor procedure charts into a responsive grid layout.
+
+---
+
+### 📈 Phase 4: Visuals & Final Polish
+
+10. **Charts & Visualizations**
+
+    - Integrate matplotlib + Plotly, serialize via protobuf3.
+
+11. **Protobuf3 Schemas**
+
+    - Implement and maintain backend/external schemas.
+
+12. **Code Review & Docs**
+    - Refactor for maintainability, ensure 80%+ test coverage, validate type
+      stubs, and update docs.
+
+---
+
+Let me know if you have any questions or want to sync before the kick-off on
+**Monday, 26 May**.
+
+Best, Adrian Gallo Greenova Maintainer

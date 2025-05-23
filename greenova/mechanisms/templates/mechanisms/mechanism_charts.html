@@ -2,8 +2,8 @@
 {% load mechanism_tags %}
 
 {% block extra_head %}
-  <!-- Plotly JS -->
-  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  <!-- Plotly JS (explicit stable version) -->
+  <script src="https://cdn.plot.ly/plotly-3.0.1.min.js" data-hx-head="true"></script>
   <!-- Minimal chart styles for Plotly -->
   <link rel="stylesheet"
         href="{% static 'mechanisms/css/plotly-chart.css' %}" />

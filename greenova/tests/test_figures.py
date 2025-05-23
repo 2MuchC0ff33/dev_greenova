@@ -1,8 +1,7 @@
 """Pytest test cases for figures.py in mechanisms app."""
 
 from beartype import beartype
-
-from greenova.stubs.mechanisms import figures
+from mechanisms import figures
 
 PIE_LABELS: list[str] = ["Not Started", "In Progress", "Completed"]
 PIE_COLORS: list[str] = ["#f9c74f", "#90be6d", "#43aa8b"]

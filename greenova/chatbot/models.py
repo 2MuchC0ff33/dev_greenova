@@ -1,4 +1,3 @@
-
 from django.contrib.auth import get_user_model
 from django.db import models
 from django.utils import timezone
@@ -8,13 +7,15 @@ from .proto_utils import deserialize_chat_message, serialize_chat_message
 
 User = get_user_model()
 
+
 class Conversation(models.Model):
     """Model representing a chat conversation."""
-    title: models.CharField = models.CharField(max_length=255, default="New Conversation")
+
+    title: models.CharField = models.CharField(
+        max_length=255, default="New Conversation"
+    )
     user: models.ForeignKey = models.ForeignKey(
-        User,
-        on_delete=models.CASCADE,
-        related_name='conversations'
+        User, on_delete=models.CASCADE, related_name="conversations"
     )
     created_at: models.DateTimeField = models.DateTimeField(default=timezone.now)
     updated_at: models.DateTimeField = models.DateTimeField(auto_now=True)
@@ -34,12 +35,12 @@ class Conversation(models.Model):
         # Placeholder for protobuf conversion
         # Will be implemented when full proto support is needed
 
+
 class ChatMessage(models.Model):
     """Model representing an individual chat message."""
+
     conversation: models.ForeignKey = models.ForeignKey(
-        Conversation,
-        on_delete=models.CASCADE,
-        related_name='messages'
+        Conversation, on_delete=models.CASCADE, related_name="messages"
     )
     content: models.TextField = models.TextField()
     is_bot: models.BooleanField = models.BooleanField(default=False)
@@ -63,8 +64,10 @@ class ChatMessage(models.Model):
             return cls.objects.create(conversation=conversation, **message_data)
         return None
 
+
 class PredefinedResponse(models.Model):
     """Model for storing predefined chat responses."""
+
     trigger_phrase: models.CharField = models.CharField(max_length=255)
     response_text: models.TextField = models.TextField()
     priority: models.IntegerField = models.IntegerField(default=0)
@@ -72,8 +75,10 @@ class PredefinedResponse(models.Model):
     def __str__(self):
         return f"{self.trigger_phrase}"
 
+
 class TrainingData(models.Model):
     """Model for storing chatbot training data."""
+
     question: models.TextField = models.TextField()
     answer: models.TextField = models.TextField()
     category: models.CharField = models.CharField(max_length=100, blank=True)

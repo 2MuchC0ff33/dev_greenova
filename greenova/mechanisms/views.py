@@ -216,10 +216,7 @@ class MechanismChartView(LoginRequiredMixin, TemplateView):
         try:
             # Check if project exists
             project = Project.objects.get(id=project_id)
-            mechanisms = (
-                EnvironmentalMechanism.objects.filter(
-                    project_id=project_id)
-            )
+            mechanisms = EnvironmentalMechanism.objects.filter(project_id=project_id)
             mechanism_charts = []
 
             # Add overall chart first (plotly)

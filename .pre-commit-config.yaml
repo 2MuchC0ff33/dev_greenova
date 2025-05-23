@@ -10,6 +10,7 @@ repos:
       - id: detect-private-key
       - id: check-added-large-files
         args: ['--maxkb=500']
+        exclude: '^greenova/static/js/vendors/plotly.*\.min\.js$'
       - id: check-yaml
       - id: check-json
       - id: check-toml
@@ -103,7 +104,11 @@ repos:
           - 'django-stubs-ext'
           - 'types-requests'
           - 'types-Pillow'
+          - 'types-dataclasses-json'
           - 'types-PyYAML'
+          - 'json-types'
+          - 'types-jsonschema'
+          - 'types-simplejson'
           - 'django-types-extra'
           - 'types-python-dateutil'
           - 'types-protobuf'
@@ -151,7 +156,14 @@ repos:
     rev: v2.4.1
     hooks:
       - id: codespell
-        exclude: 'requirements/.*\.txt|requirements/.*\.in|notebooks/pie_chart_gallery\.ipynb'
+        exclude: >
+          (?x)^(
+            requirements/.*\.txt|
+            requirements/.*\.in|
+            notebooks/pie_chart_gallery\.ipynb|
+            greenova/static/js/vendors/.*
+          )$
+
   - repo: https://github.com/DavidAnson/markdownlint-cli2
     rev: v0.18.1
     hooks:

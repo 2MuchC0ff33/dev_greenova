@@ -51,7 +51,8 @@ class BaseTemplateView(TemplateView):
                 "main_navigation": MAIN_NAVIGATION,
                 "user_navigation": USER_NAVIGATION,
                 "auth_navigation": AUTH_NAVIGATION,
-                # Check if TypeScript is available (e.g., by checking if the file exists)
+                # Check if TypeScript is available (e.g., by checking if the file
+                # exists)
                 "ts_available": os.path.exists(
                     os.path.join(settings.STATIC_ROOT, "ts/dist/index.js")
                 ),

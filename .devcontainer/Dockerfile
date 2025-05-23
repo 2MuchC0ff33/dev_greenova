@@ -10,24 +10,29 @@ ENV PYTHONUNBUFFERED=1 \
   DJANGO_SETTINGS_MODULE=greenova.settings
 
 # Install system dependencies
-RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
-  && apt-get -y install --no-install-recommends \
+RUN apt-get update && export DEBIAN_FRONTEND=noninteractive && \
+  apt-get -y install --no-install-recommends \
   python3-pip \
-  python3-venv \
-  && apt-get clean \
-  && rm -rf /var/lib/apt/lists/*
+  python3-venv && \
+  apt-get clean && \
+  rm -rf /var/lib/apt/lists/*
 
 # Ensure pip is properly installed and upgraded
 RUN python3 -m pip install --no-cache-dir --upgrade pip setuptools wheel
 
 # Set up Node.js using the pre-installed NVM
-RUN . "$NVM_DIR/nvm.sh" && nvm install ${NODE_VERSION} \
-  && nvm alias default ${NODE_VERSION} \
-  && npm install -g npm@${NPM_VERSION}
+RUN . "$NVM_DIR/nvm.sh" && nvm install ${NODE_VERSION} && \
+  nvm alias default ${NODE_VERSION} && \
+  nvm use default && \
+  nvm cache clear && \
+  npm install -g npm@${NPM_VERSION}
 
 # Create required directories for fish shell
-RUN mkdir -p /home/vscode/.config/fish /home/vscode/.config/fish/functions /home/vscode/.local/share/fish \
-  && chown -R vscode:vscode /home/vscode/.config /home/vscode/.local
+RUN mkdir -p /home/vscode/.config/fish /home/vscode/.config/fish/functions /home/vscode/.local/share/fish && \
+  mkdir -p /home/vscode/.config/fish/conf.d /home/vscode/.config/fish/completions && \
+  mkdir -p /home/vscode/.config/fish/terminfo && \
+  mkdir -p /home/vscode/.config/fish/variables && \
+  chown -R vscode:vscode /home/vscode/.config /home/vscode/.local
 
 # We'll install Python dependencies after the workspace is mounted
 # in the postCreateCommand or postStartCommand
@@ -36,9 +41,9 @@ RUN mkdir -p /home/vscode/.config/fish /home/vscode/.config/fish/functions /home
 USER vscode
 
 # Ensure fish shell is properly configured
-RUN echo 'set -gx PATH /usr/local/share/nvm/versions/node/v${NODE_VERSION}/bin $PATH' > /home/vscode/.config/fish/config.fish \
-  && echo 'set -gx NODE_PATH /usr/local/share/nvm/versions/node/v${NODE_VERSION}/lib/node_modules' >> /home/vscode/.config/fish/config.fish \
-  && echo 'set -gx PYTHONSTARTUP /workspaces/greenova/pythonstartup' >> /home/vscode/.config/fish/config.fish
+RUN echo "set -gx PATH /usr/local/share/nvm/versions/node/v$NODE_VERSION/bin \$PATH" >>/home/vscode/.config/fish/config.fish && \
+  echo "set -gx NODE_PATH /usr/local/share/nvm/versions/node/v$NODE_VERSION/lib/node_modules" >>/home/vscode/.config/fish/config.fish && \
+  echo "set -gx PYTHONSTARTUP /workspaces/greenova/pythonstartup" >>/home/vscode/.config/fish/config.fish
 
 # Set working directory
 WORKDIR /workspaces/greenova

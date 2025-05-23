@@ -9,7 +9,7 @@ register = template.Library()
 @register.filter
 def full_name_or_username(user):
     """Return user's full name or username if full name is not set."""
-    if hasattr(user, 'get_full_name') and user.get_full_name():
+    if hasattr(user, "get_full_name") and user.get_full_name():
         return user.get_full_name()
     return user.username
 
@@ -17,9 +17,9 @@ def full_name_or_username(user):
 @register.filter
 def profile_image_url(user):
     """Return profile image URL or empty string if no image."""
-    if hasattr(user, 'profile') and user.profile.profile_image:
+    if hasattr(user, "profile") and user.profile.profile_image:
         return user.profile.profile_image.url
-    return ''
+    return ""
 
 
 @register.simple_tag
@@ -65,9 +65,9 @@ def has_verified_email(user):
 @register.simple_tag(takes_context=True)
 def login_url_with_next(context):
     """Generate login URL with the current path as next parameter."""
-    request = context.get('request')
+    request = context.get("request")
     if not request:
-        return '/authentication/login/'
+        return "/authentication/login/"
 
     next_url = request.path
-    return f'/authentication/login/?next={next_url}'
+    return f"/authentication/login/?next={next_url}"

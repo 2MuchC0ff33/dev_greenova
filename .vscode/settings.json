@@ -209,20 +209,6 @@
     "truncate": "allow",
     "update": "allow"
   },
-  "dbcode.connections": [
-    {
-      "connectionId": "N-Ye-PKEqFS9-XzbC_IjN",
-      "connectionType": "socket",
-      "driver": "sqlite",
-      "driverOptions": {
-        "extensions": []
-      },
-      "name": "greenova",
-      "readOnly": false,
-      "role": "development",
-      "socket": "greenova/greenova/db.sqlite3"
-    }
-  ],
   "dbcode.format.dateLocalTimezone": true,
   "dbcode.format.dateStyle": "ISO 9075",
   "django.i18n": true,
@@ -508,7 +494,6 @@
     ".pyi",
     ".txt",
     ".md",
-    ".html",
     ".typed",
     ".ini",
     ".cfg",

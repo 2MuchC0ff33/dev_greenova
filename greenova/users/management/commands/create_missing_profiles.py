@@ -4,8 +4,9 @@ from users.models import Profile
 
 User = get_user_model()
 
+
 class Command(BaseCommand):
-    help = 'Creates profiles for users who do not have one'
+    help = "Creates profiles for users who do not have one"
 
     def handle(self, *args, **options):
         count = 0
@@ -18,4 +19,4 @@ class Command(BaseCommand):
                 Profile.objects.create(user=user)
                 count += 1
 
-        self.stdout.write(self.style.SUCCESS(f'Created {count} missing profiles'))
+        self.stdout.write(self.style.SUCCESS(f"Created {count} missing profiles"))

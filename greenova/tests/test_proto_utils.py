@@ -3,9 +3,8 @@
 from datetime import date
 
 import pytest
+from mechanisms import proto_utils
 from mechanisms.models import EnvironmentalMechanism
-
-from greenova.stubs.mechanisms import proto_utils
 
 OBLIGATION_COUNT: int = 2
 SEGMENT_COUNT: int = 4
@@ -44,13 +43,14 @@ def test_serialize_obligation_insights_basic() -> None:
         DummyObligation("OBL001", date(2024, 1, 1), date(2024, 2, 1)),
         DummyObligation("OBL002", date(2024, 3, 1), None),
     ]
-    resp = proto_utils.serialize_obligation_insights(
+    params = proto_utils.ObligationInsightParams(
         mechanism_id=1,
         status="Not Started",
         status_key="not_started",
         obligations=obligations,
-        total_count=OBLIGATION_COUNT,
+        total_count=OBLIGATION_COUNT
     )
+    resp = proto_utils.serialize_obligation_insights(params)
     assert resp.mechanism_id == 1
     assert resp.status == "Not Started"
     assert resp.status_key == "not_started"
@@ -70,14 +70,15 @@ def test_serialize_obligation_insights_error() -> None:
 
     Asserts that the error field is set and count is zero when obligations are empty.
     """
-    resp = proto_utils.serialize_obligation_insights(
+    params = proto_utils.ObligationInsightParams(
         mechanism_id=2,
         status="Completed",
         status_key="completed",
         obligations=[],
         total_count=0,
-        error="Some error occurred",
+        error="Some error occurred"
     )
+    resp = proto_utils.serialize_obligation_insights(params)
     assert resp.error == "Some error occurred"
     assert resp.count == 0
 

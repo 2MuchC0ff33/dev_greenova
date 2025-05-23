@@ -10,13 +10,13 @@ def responsibility_home(request):
     # Get assignments for current user
     assignments = ResponsibilityAssignment.objects.filter(
         user=request.user
-    ).select_related('obligation', 'role')
+    ).select_related("obligation", "role")
 
     context = {
-        'assignments': assignments,
+        "assignments": assignments,
     }
 
-    return render(request, 'responsibility/responsibility_home.html', context)
+    return render(request, "responsibility/responsibility_home.html", context)
 
 
 @login_required
@@ -25,13 +25,13 @@ def assignment_list(request):
     # Get assignments for current user
     assignments = ResponsibilityAssignment.objects.filter(
         user=request.user
-    ).select_related('obligation', 'role')
+    ).select_related("obligation", "role")
 
     context = {
-        'assignments': assignments,
+        "assignments": assignments,
     }
 
-    return render(request, 'responsibility/assignment_list.html', context)
+    return render(request, "responsibility/assignment_list.html", context)
 
 
 @login_required
@@ -40,12 +40,11 @@ def role_list(request):
     # Get roles for companies the user belongs to
     user_companies = request.user.companies.all()
     roles = Responsibility.objects.filter(
-        company__in=user_companies,
-        is_active=True
-    ).select_related('company')
+        company__in=user_companies, is_active=True
+    ).select_related("company")
 
     context = {
-        'roles': roles,
+        "roles": roles,
     }
 
-    return render(request, 'responsibility/role_list.html', context)
+    return render(request, "responsibility/role_list.html", context)

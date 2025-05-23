@@ -314,7 +314,7 @@ class Obligation(models.Model):
             ):
                 try:
                     # Extract numeric part after the prefix
-                    number_part = obligation.obligation_number[len(prefix) :]
+                    number_part = obligation.obligation_number[len(prefix):]
                     current_number = int(number_part)
 
                     # Update highest if we found a larger number
@@ -351,7 +351,8 @@ class Obligation(models.Model):
 
         # Ensure the format is correct (prefix + number)
         if not self.obligation_number.startswith("PCEMP-"):
-            self.obligation_number = f"PCEMP-{self.obligation_number.split('-')[-1] if '-' in self.obligation_number else self.obligation_number}"
+            self.obligation_number = f"PCEMP-{self.obligation_number.split(
+                '-')[-1] if '-' in self.obligation_number else self.obligation_number}"
 
         try:
             super().save(*args, **kwargs)
@@ -470,7 +471,8 @@ def update_forecasted_date_on_change(sender, instance, **kwargs):
             and old_instance.status != STATUS_COMPLETED
             and instance.recurring_obligation
         ):
-            # When a recurring obligation is completed, reset status and calculate next date
+            # When a recurring obligation is completed, reset status and calculate
+            # next date
             instance.status = STATUS_NOT_STARTED
             instance.update_recurring_forecasted_date()
 

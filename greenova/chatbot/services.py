@@ -7,6 +7,7 @@ from .proto_utils import create_chat_response, parse_chat_response
 
 logger = logging.getLogger(__name__)
 
+
 class ChatbotService:
     """Service class for chatbot logic."""
 
@@ -14,10 +15,7 @@ class ChatbotService:
     def create_conversation(user, title=None):
         """Create a new conversation for a user."""
         title = title or "New Conversation"
-        conversation = Conversation.objects.create(
-            user=user,
-            title=title
-        )
+        conversation = Conversation.objects.create(user=user, title=title)
         return conversation
 
     @staticmethod
@@ -29,7 +27,7 @@ class ChatbotService:
                 conversation=conversation,
                 content=content,
                 is_bot=is_bot,
-                attachments=attachments or []
+                attachments=attachments or [],
             )
 
             # Update conversation last updated timestamp
@@ -45,7 +43,7 @@ class ChatbotService:
         """Get all messages for a conversation."""
         try:
             query = ChatMessage.objects.filter(conversation_id=conversation_id)
-            return query.order_by('timestamp')
+            return query.order_by("timestamp")
         except (ChatMessage.DoesNotExist, Conversation.DoesNotExist) as e:
             logger.error("Error retrieving messages: %s", str(e))
             return []
@@ -64,9 +62,7 @@ class ChatbotService:
 
         # Add the bot's response to the conversation
         ChatbotService.add_message(
-            conversation_id=conversation_id,
-            content=response_text,
-            is_bot=True
+            conversation_id=conversation_id, content=response_text, is_bot=True
         )
 
         return response_text
@@ -76,9 +72,9 @@ class ChatbotService:
         """Check if message matches any predefined responses."""
         # Search for exact or partial matches in trigger phrases
         predefined_responses = PredefinedResponse.objects.filter(
-            Q(trigger_phrase__iexact=message_text) |
-            Q(trigger_phrase__icontains=message_text)
-        ).order_by('-priority')
+            Q(trigger_phrase__iexact=message_text)
+            | Q(trigger_phrase__icontains=message_text)
+        ).order_by("-priority")
 
         return predefined_responses.first()
 

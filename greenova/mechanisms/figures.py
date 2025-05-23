@@ -178,8 +178,7 @@ def get_mechanism_chart(
         Tuple of (matplotlib Figure, SVG image as string).
     """
     try:
-        mechanism = EnvironmentalMechanism.objects.get(
-            id=mechanism_id)
+        mechanism = EnvironmentalMechanism.objects.get(id=mechanism_id)
         labels = ["Not Started", "In Progress", "Completed", "Overdue"]
         data = [
             mechanism.not_started_count,
@@ -231,8 +230,7 @@ def get_overall_chart(
         Tuple of (matplotlib Figure, SVG image as string).
     """
     try:
-        mechanisms = EnvironmentalMechanism.objects.filter(
-            project_id=project_id)
+        mechanisms = EnvironmentalMechanism.objects.filter(project_id=project_id)
 
         # Aggregate data
         not_started = sum(m.not_started_count for m in mechanisms)
@@ -276,8 +274,7 @@ def get_mechanism_plotly_chart(
 ) -> str | None:
     """Plotly pie chart for a specific mechanism (protobuf serialization)."""
     try:
-        mechanism = EnvironmentalMechanism.objects.get(
-            id=mechanism_id)
+        mechanism = EnvironmentalMechanism.objects.get(id=mechanism_id)
         chart_data_pb = proto_utils.serialize_mechanism_chart_data(mechanism)
 
         segments = cast(list[Any], getattr(chart_data_pb, "segments", []))
@@ -303,8 +300,7 @@ def get_overall_plotly_chart(
 ) -> str | None:
     """Plotly pie chart for all mechanisms in a project (protobuf serialization)."""
     try:
-        mechanisms = EnvironmentalMechanism.objects.filter(
-            project_id=project_id)
+        mechanisms = EnvironmentalMechanism.objects.filter(project_id=project_id)
         chart_data_pb = proto_utils.serialize_overall_chart_data(project_id, mechanisms)
         labels = [segment.label for segment in chart_data_pb.segments]
         data = [segment.value for segment in chart_data_pb.segments]

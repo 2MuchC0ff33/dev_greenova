@@ -24,7 +24,11 @@
          aria-label="Dashboard Summary"
          id="dashboard-metrics-container"
          data-hx-preserve="true">
-  <div class="card metric-card card-status-danger">
+  <div class="card metric-card card-status-danger"
+       tabindex="0"
+       aria-describedby="overdue-obligations-container"
+       aria-label="Overdue obligations"
+       role="region">
     <div class="card-body">
       <h3 class="metric-card-label">
 Overdue Obligations
@@ -36,6 +40,70 @@ Overdue Obligations
         <span class="trend-indicator"></span>
         <span class="trend-down">Overdue</span>
       </div>
+      <button type="button"
+              class="overdue-obligations-trigger"
+              aria-label="View overdue obligations details"
+              aria-expanded="false"
+              aria-controls="overdue-obligations-container"
+              _="on click toggle .expanded on #overdue-obligations-container then if #overdue-obligations-container.classList.contains('expanded') set @aria-expanded of me to 'true' then remove @hidden from #overdue-obligations-container then send show to #overdue-obligations-container else set @aria-expanded of me to 'false' then set @hidden of #overdue-obligations-container to 'true' then send hide to #overdue-obligations-container end">
+        <span class="visually-hidden">View Details</span>
+        <svg width="16"
+             height="16"
+             viewBox="0 0 16 16"
+             fill="currentColor"
+             aria-hidden="true">
+<path d="M8 2a6 6 0 100 12A6 6 0 008 2zM7 7V5h2v2H7zm0 4V9h2v2H7z" />
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Overdue Obligations Modal/Overlay -->
+  <div id="overdue-obligations-container"
+       class="overdue-obligations-container"
+       role="dialog"
+       aria-modal="true"
+       aria-labelledby="overdue-obligations-title"
+       aria-describedby="overdue-obligations-body"
+       tabindex="-1"
+       hidden>
+    <div class="overdue-obligations-backdrop"
+         tabindex="-1"
+         aria-hidden="true"
+         _="on click remove .expanded from #overdue-obligations-container then set the @aria-expanded of .overdue-obligations-trigger to 'false' then set the @hidden of #overdue-obligations-container to 'true' then send hide to #overdue-obligations-container">
+    </div>
+    <div class="overdue-obligations-content" role="document">
+      <header class="overdue-obligations-header">
+        <h2 id="overdue-obligations-title" class="overdue-obligations-title">
+          Overdue Obligations
+        </h2>
+        <button type="button"
+                class="overdue-obligations-close"
+                aria-label="Close overdue obligations details"
+                _="on click remove .expanded from #overdue-obligations-container then set the @aria-expanded of .overdue-obligations-trigger to 'false' then set the @hidden of #overdue-obligations-container to 'true' then send hide to #overdue-obligations-container">
+          <span aria-hidden="true">×</span>
+        </button>
+      </header>
+      <div id="overdue-obligations-body" class="overdue-obligations-body">
+        {% if overdue_obligations %}
+{% include "obligations/components/_obligations_summary.html" with obligations=overdue_obligations show_overdue_only=True user_can_edit=user.is_staff %}
+        {% else %}
+          <div class="empty-state">
+            <p>
+No overdue obligations found.
+            </p>
+            {% if user.is_staff %}
+              <small class="text-muted">
+                Debug: overdue_obligations_count = {{ overdue_obligations_count|default:"None" }}
+              </small>
+            {% endif %}
+          </div>
+        {% endif %}
+      </div>
+    </div>
+    <div class="visually-hidden"
+         aria-live="polite"
+         id="overdue-obligations-live">
     </div>
   </div>
 
@@ -110,3 +178,5 @@ Loading chart data...
     </div>
   </div>
 </div>
+
+<script src="{% static 'js/obligation_modal.js' %}"></script>

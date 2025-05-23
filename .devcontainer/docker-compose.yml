@@ -5,10 +5,10 @@ services:
       dockerfile: .devcontainer/Dockerfile
     image: greenova:latest
     volumes:
-      - ..:/workspaces/greenova:delegated
-      - home:/home/vscode:delegated
+      - ..:/workspaces/greenova:cached
+      - home:/home/vscode:cached
       - ${HOME}/.ssh:/home/vscode/.ssh:ro
-      - dotfiles:/home/vscode/dotfiles:delegated
+      - dotfiles:/home/vscode/dotfiles:cached
     environment:
       PYTHONUNBUFFERED: 1
       DJANGO_SETTINGS_MODULE: greenova.settings

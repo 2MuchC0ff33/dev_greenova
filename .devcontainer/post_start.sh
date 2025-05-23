@@ -138,10 +138,10 @@ fi
 
 # Install pip-tools and compile requirements
 log "Installing pip-tools and compiling requirements"
-$VENV_DIR/bin/pip install --upgrade pip pip
-$VENV_DIR/bin/pip install --upgrade pip wheel
-$VENV_DIR/bin/pip install --upgrade pip setuptools
-$VENV_DIR/bin/pip install --upgrade pip pip-tools
+$VENV_DIR/bin/pip install --upgrade --use-pep517 pip pip
+$VENV_DIR/bin/pip install --upgrade --use-pep517 pip wheel
+$VENV_DIR/bin/pip install --upgrade --use-pep517 pip setuptools
+$VENV_DIR/bin/pip install --upgrade --use-pep517 pip pip-tools
 
 for req in requirements.in requirements-dev.in requirements-prod.in; do
   in_file="$WORKSPACE_DIR/requirements/$req"
@@ -242,8 +242,8 @@ function greenova --description "Greenova project helper"
             end
 
             source /workspaces/greenova/.venv/bin/activate.fish
-            pip install --upgrade pip
-            pip install -r requirements/dev.txt -c requirements/constraints.txt
+            pip install --upgrade --use-pep517 pip
+            pip install -r --use-pep517 requirements/dev.txt -c requirements/constraints.txt
             cd greenova
             python manage.py migrate
             python manage.py collectstatic --noinput

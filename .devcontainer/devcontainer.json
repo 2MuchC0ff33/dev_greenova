@@ -138,11 +138,8 @@
         "ms-python.debugpy",
         "foxundermoon.shell-format",
         "EditorConfig.EditorConfig",
-        "ms-vscode.vscode-copilot-data-analysis",
         "github.vscode-pull-request-github",
-        "ms-azuretools.vscode-docker",
         "dotenv.dotenv-vscode",
-        "ms-toolsai.jupyter",
         "snyk-security.snyk-vulnerability-scanner",
         "ms-cst-e.vscode-devskim",
         "ms-vscode.makefile-tools",
@@ -153,12 +150,10 @@
         "stylelint.vscode-stylelint",
         "wholroyd.jinja",
         "rarnoldmobile.todo-txt",
-        "github.vscode-github-actions",
         "ymotongpoo.licenser",
         "marp-team.marp-vscode",
         "dbcode.dbcode",
         "ms-vscode.copilot-mermaid-diagram",
-        "ms-toolsai.datawrangler",
         "arahata.linter-actionlint",
         "ms-python.python",
         "ms-python.mypy-type-checker",
@@ -171,11 +166,7 @@
         "ms-python.isort",
         "ms-python.vscode-pylance",
         "charliermarsh.ruff",
-        "Willumz.generic-pseudocode",
-        "fnando.linter",
-        "GitHub.vscode-pull-request-github",
-        "MS-CST-E.vscode-devskim",
-        "yzane.markdown-pdf"
+        "fnando.linter"
       ]
     }
   },
@@ -203,9 +194,6 @@
     },
     "ghcr.io/devcontainers-extra/features/curl-apt-get:1": {},
     "ghcr.io/devcontainers-extra/features/fish-apt-get:1": {},
-    "ghcr.io/devcontainers-extra/features/protoc:1": {
-      "version": "latest"
-    },
     "ghcr.io/devcontainers-extra/features/shfmt:1": {
       "version": "latest"
     },
@@ -219,8 +207,7 @@
       "version": "latest"
     },
     "ghcr.io/devcontainers-extra/features/bandit:2": {
-      "version": "latest",
-      "plugins": "bandit-sarif-formatter"
+      "version": "latest"
     },
     "ghcr.io/devcontainers-extra/features/black:2": {
       "version": "latest"
@@ -231,9 +218,11 @@
     },
     "ghcr.io/devcontainers-extra/features/mypy:2": {
       "version": "latest",
-      "plugins": "django-stubs django-stubs-ext types-requests types-Pillow types-PyYAML django-types-extra types-python-dateutil types-protobuf matplotlib-stubs pandas-stubs types-pytz pytest-stub types-pytest-lazy-fixture types-jinja2 types-setuptools types-cryptography types-flake8 plotly-stubs"
+      "plugins": "django-stubs json-types django-stubs-ext types-dataclasses-json types-requests types-Pillow types-jsonschema types-simplejson types-PyYAML django-types-extra types-python-dateutil types-protobuf matplotlib-stubs pandas-stubs types-pytz pytest-stub types-pytest-lazy-fixture types-jinja2 types-setuptools types-cryptography types-flake8 plotly-stubs"
     },
-    "ghcr.io/devcontainers-extra/features/isort:2": {},
+    "ghcr.io/devcontainers-extra/features/isort:2": {
+      "version": "latest"
+    },
     "ghcr.io/devcontainers-extra/features/pre-commit:2": {
       "version": "latest",
       "plugins": "pre-commit-hooks"
@@ -256,6 +245,15 @@
     "ghcr.io/devcontainers-extra/features/pylint:2": {
       "version": "latest",
       "plugins": "pylint-django pylint-pytest pylint-plugin-utils pylint-pydantic pylint-protobuf pylint-flask pylint-celery pylint-quotes"
+    },
+    "ghcr.io/devcontainers-extra/features/protoc:1": {
+      "version": "latest"
+    },
+    "ghcr.io/devcontainers/features/git:1": {
+      "version": "latest"
+    },
+    "ghcr.io/r3dpoint/devcontainer-features/tailwindcss-standalone-cli:1": {
+      "version": "latest"
     }
   }
 }
